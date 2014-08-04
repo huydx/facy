@@ -3,6 +3,7 @@
   koala
   readline
   yaml
+  thread
   launchy
   eventmachine
   active_support/core_ext

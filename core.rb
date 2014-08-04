@@ -55,21 +55,20 @@ module Facy
     def start(options={})
       _init      
 
-=begin
       EM.run do
         Thread.start do
-          while buf = Readline.readline(prompt) 
-            unless Readline::HISTORY.count == 1
-              Readline::HISTORY.pop if buf.empty?
-            end
-            output(buf.strip)
+          while buf = Readline.readline(config[:prompt], true) 
+            print "->", buf, "\n"
+            #unless Readline::HISTORY.count == 1
+            #  Readline::HISTORY.pop if buf.empty?
+            #end
           end
         end
-      end
-=end
-      EM.run do
+
         EM.add_periodic_timer(config[:stream_fetch_interval]) do
-          facebook_stream_fetch
+          Thread.start do
+            facebook_stream_fetch
+          end
         end
 
         EM.add_periodic_timer(config[:output_interval]) do
