@@ -11,40 +11,65 @@ module Facy
     end
 
     def user_id_cache_store
-      @user_id_cache_store ||= ActiveSupport::Cache::MemoryStore.new
+      @user_id_cache_store ||= {}
+    end
+
+    def user_id_cache_dump
+      File.open(File.expand_path(
+        config[:user_id_cache_dump_file],
+        config[:user_id_cache_dump_folder]), "wb") do |file|
+
+        file.write Marshal.dump(user_id_cache_store)
+      end
+    end
+
+    def user_id_cache_load
+      data = Marshal.load(File.binread(File.expand_path(
+        config[:user_id_cache_dump_file],
+        config[:user_id_cache_dump_folder]
+      )))
+      data.each { |key, val| user_id_cache_store[key] = val }
+    rescue Errno::ENOENT
+    rescue Exception => e
+      p e
     end
 
     def user_id_cached?(id)
-      !!user_id_cache_store.read(id)
+      user_id_cache_store.include? id
     end
     
     #RULE: all facebook method should be prefix with facebook
     def facebook_stream_fetch
+      p "fetching...."
       streams  = @rest.rest_call("stream.get", @authen_hash).fetch("posts")
-      #post_id, actor_id, message
-      streams.each { |post| stream_print_queue << post }
 
       actor_ids = streams.map { |m| m["actor_id"] }
       not_cache_ids = actor_ids.select { |id| !user_id_cached?(id) }
-      ids_names = GraphApi.facebook_ids2names(not_cache_ids)
-      cache_user_ids(ids_names)
+      ids_names = facebook_ids2names(not_cache_ids)
+      streams.each { |post| stream_print_queue << post }
+
     rescue KeyError
     end
 
-    def cache_user_ids(ids_names)
-      ids_names.each { |hash| user_id_cache_store.write(hash[:id], hash[:name]) }
+    def cache_user_id(id, name)
+      user_id_cache_store[id] = name
+    end
+
+    def facebook_ids2names(ids_array)
+      ids_array.map { |id| 
+        json_ret = GraphApi.facebook_id2name(id)
+        cache_user_id(json_ret["id"], json_ret["username"]) unless user_id_cached?(id)
+        {name: json_ret["username"], id: json_ret["id"]} 
+      }
     end
     
     class GraphApi
       include HTTParty
+      extend ::Facy::Facebook
       base_uri "http://graph.facebook.com"
 
       def self.facebook_id2name(id)
-        return JSON.parse(get("/#{id}"))
-      end
-
-      def self.facebook_ids2names(ids_array)
-        ids_array.map { |id| {name: facebook_id2name(id)["username"], id: id} }
+        json_ret = JSON.parse(get("/#{id}"))
       end
     end
   end 

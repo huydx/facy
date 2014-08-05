@@ -15,6 +15,7 @@ module Facy
     def _init
       load_config
       inits.each { |block| class_eval(&block) }
+      user_id_cache_load
     end
 
     def load_config
@@ -44,11 +45,15 @@ module Facy
       {
         session_file_folder: "/tmp",
         session_file_name: "session.yml",
+        user_id_cache_dump_folder: "/tmp",
+        user_id_cache_dump_file: "facy_user_id_cache.dump",
         app_id: config['app_id'],
         app_token: config['app_token'],
         prompt: "facy> ",
         stream_fetch_interval: 2,
-        output_interval: 3
+        output_interval: 3,
+        debug: true,
+        debug_level: 1
       }
     end
 
@@ -65,15 +70,21 @@ module Facy
           end
         end
 
-        EM.add_periodic_timer(config[:stream_fetch_interval]) do
-          Thread.start do
-            facebook_stream_fetch
+        
+        Thread.start do
+          EM.add_periodic_timer(config[:stream_fetch_interval]) do
+              facebook_stream_fetch
+          end
+        end
+        
+        Thread.start do
+          EM.add_periodic_timer(config[:output_interval]) do
+            output
           end
         end
 
-        EM.add_periodic_timer(config[:output_interval]) do
-          output
-        end
+        Signal.trap("INT")  { stop_process }
+        Signal.trap("TERM") { stop_process }
       end
     end
 
@@ -85,6 +96,13 @@ module Facy
       mutex.synchronize do
         block.call
       end
+    end
+
+    def stop_process
+      Thread.new {
+        user_id_cache_dump 
+        EventMachine.stop 
+      }.join
     end
   end
 
