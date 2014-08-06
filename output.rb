@@ -1,7 +1,6 @@
 module Facy
   module Output
     def output
-      stream_print_queue.reverse!
       while !stream_print_queue.empty?
         post = stream_print_queue.pop
         stream_print(post) unless stream_printed.include? post["post_id"]
