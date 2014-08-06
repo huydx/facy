@@ -37,22 +37,21 @@ module Facy
     def user_id_cached?(id)
       user_id_cache_store.include? id
     end
-    
+
+    def cache_user_id(id, name)
+      user_id_cache_store[id] = name
+    end
+
     #RULE: all facebook method should be prefix with facebook
     def facebook_stream_fetch
-      p "fetching...."
       streams  = @rest.rest_call("stream.get", @authen_hash).fetch("posts")
-
       actor_ids = streams.map { |m| m["actor_id"] }
       not_cache_ids = actor_ids.select { |id| !user_id_cached?(id) }
       ids_names = facebook_ids2names(not_cache_ids)
       streams.each { |post| stream_print_queue << post }
 
+      stop_animation = true
     rescue KeyError
-    end
-
-    def cache_user_id(id, name)
-      user_id_cache_store[id] = name
     end
 
     def facebook_ids2names(ids_array)
@@ -65,7 +64,6 @@ module Facy
     
     class GraphApi
       include HTTParty
-      extend ::Facy::Facebook
       base_uri "http://graph.facebook.com"
 
       def self.facebook_id2name(id)

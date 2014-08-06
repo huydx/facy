@@ -70,10 +70,9 @@ module Facy
           end
         end
 
-        
         Thread.start do
           EM.add_periodic_timer(config[:stream_fetch_interval]) do
-              facebook_stream_fetch
+            facebook_stream_fetch
           end
         end
         
