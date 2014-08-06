@@ -3,22 +3,23 @@ module Facy
     def output
       while !stream_print_queue.empty?
         post = stream_print_queue.pop
-        stream_print(post) unless stream_printed.include? post["post_id"]
+        stream_print(post) unless stream_printed.include? post["id"]
       end
     end
 
     def stream_print(post)
-      stream_printed.add post["post_id"]
-      uname = user_id_cache_store[post["actor_id"]]
-      pmess = strip(post["message"])
-      pdate = DateTime.strptime(post["updated_time"].to_s,'%s') 
+      stream_printed.add post["id"]
+      uname   = post["from"]["name"]
+      message = strip(post["message"])
+      link    = post["link"]
+      time    = Date.parse(post["created_time"])
       puts <<-STREAM_ITEM
- \e[0;34m #{uname} \e[m : #{pmess} #{pdate.strftime("%m/%d %H:%M")}
+\e[0;34m #{uname} \e[m : #{message} \e[0;34m #{link}\e[m #{time.strftime("%m/%d %H:%M")}
       STREAM_ITEM
     end
 
     def strip(text)
-      text.truncate(50)
+      text.truncate(50) if text
     end
 
     def loading_animation

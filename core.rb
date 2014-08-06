@@ -15,7 +15,6 @@ module Facy
     def _init
       load_config
       inits.each { |block| class_eval(&block) }
-      user_id_cache_load
     end
 
     def load_config
@@ -49,6 +48,7 @@ module Facy
         user_id_cache_dump_file: "facy_user_id_cache.dump",
         app_id: config['app_id'],
         app_token: config['app_token'],
+        app_secret: config['app_secret'],
         prompt: "facy> ",
         stream_fetch_interval: 2,
         output_interval: 3,
@@ -99,7 +99,6 @@ module Facy
 
     def stop_process
       Thread.new {
-        user_id_cache_dump 
         EventMachine.stop 
       }.join
     end
