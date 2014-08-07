@@ -3,10 +3,11 @@ require "pry"
 module Facy
   module GetToken
     def get_tokens
-      app_id    = config[:app_id]
-      app_token = config[:app_token]
-      get_access_url =
-        "https://www.facebook.com/dialog/oauth?client_id=#{app_id}&scope=read_stream&redirect_uri=http://www.facebook.com/connect/login_success.html"
+      app_id          = config[:app_id]
+      app_token       = config[:app_token]
+      permission      = config[:permission]
+      get_access_url  =
+        "https://www.facebook.com/dialog/oauth?client_id=#{app_id}&scope=#{permission}&redirect_uri=http://www.facebook.com/connect/login_success.html"
       get_token_url =
         "http://www.facebook.com/code_gen.php?v=1.0&api_key=#{app_id}"
       rest = Koala::Facebook::RestAPI.new(app_token)
@@ -29,6 +30,7 @@ module Facy
         "session_key" => user_session["session_key"],
         "uid" => user_session["uid"]
       }
+      config[:session_key] = user_session["session_key"]
       return authen_hash
     end
 

@@ -43,12 +43,11 @@ module Facy
       config = YAML.load_file(File.expand_path("config.yml", "."))
       {
         session_file_folder: "/tmp",
-        session_file_name: "session.yml",
-        user_id_cache_dump_folder: "/tmp",
-        user_id_cache_dump_file: "facy_user_id_cache.dump",
+        session_file_name: "_facy_session.yml",
         app_id: config['app_id'],
         app_token: config['app_token'],
         app_secret: config['app_secret'],
+        permission: config['permission'],
         prompt: "facy> ",
         stream_fetch_interval: 2,
         output_interval: 3,
