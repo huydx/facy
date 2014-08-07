@@ -5,6 +5,10 @@ module Facy
         post = stream_print_queue.pop
         stream_print(post) unless stream_printed.include? post["id"]
       end
+      while !notification_print_queue.empty?
+        notify = notification_print_queue.pop
+        notifications_print(notify) unless notifications_printed.include? notify["id"]
+      end
     end
 
     def stream_print(post)
@@ -18,6 +22,10 @@ module Facy
       STREAM_ITEM
     end
 
+    def notifications_print(notify)
+
+    end
+    
     def strip(text)
       text.truncate(50) if text
     end

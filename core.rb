@@ -50,6 +50,7 @@ module Facy
         permission: config['permission'],
         prompt: "facy> ",
         stream_fetch_interval: 2,
+        notification_fetch_interval: 2,
         output_interval: 3,
         debug: true,
         debug_level: 1
@@ -78,6 +79,12 @@ module Facy
         Thread.start do
           EM.add_periodic_timer(config[:output_interval]) do
             output
+          end
+        end
+
+        Thread.start do
+          EM.add_periodic_timer(config[:notification_fetch_interval]) do
+            facebook_notification_fetch
           end
         end
 
