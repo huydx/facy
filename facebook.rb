@@ -1,22 +1,6 @@
 module Facy
   module Facebook
     attr_reader :authen_hash, :rest
-  
-    def stream_printed
-      @stream_printed ||= Set.new
-    end
-
-    def stream_print_queue
-      @stream_print_queue ||= []
-    end
-
-    def notification_printed
-      @notification_printed ||= Set.new
-    end
-
-    def notification_print_queue
-      @notification_print_queue ||= []
-    end
 
     #RULE: all facebook method should be prefix with facebook
     def facebook_stream_fetch
@@ -30,11 +14,13 @@ module Facy
     end
 
     def facebook_post(text)
-      raise FacebookGraphReqError unless @graph.put_wall_post(text).fetch("id")
+      raise FacebookGraphReqError unless id = @graph.put_wall_post(text).fetch("id")
+      insert_item(Item.new(info: 'success', message: "post #{id} has been posted to your wall"))
     end
 
     def facebook_like(post_id)
       raise FacebookGraphReqError unless @graph.put_like(post_id)
+      insert_item(Item.new(info: 'success', message: "post #{post_id} has been liked"))
     end
   end 
 
