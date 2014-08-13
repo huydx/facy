@@ -1,15 +1,11 @@
 module Facy
   module InputQueue
-    def stream_printed
-      @stream_printed ||= Set.new
+    def printed_item
+      @printed_item ||= Set.new
     end
 
     def stream_print_queue
       @stream_print_queue ||= []
-    end
-
-    def notification_printed
-      @notification_printed ||= Set.new
     end
 
     def notification_print_queue

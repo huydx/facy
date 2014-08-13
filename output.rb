@@ -3,17 +3,17 @@ module Facy
     def periodic_output
       while !stream_print_queue.empty?
         post = stream_print_queue.pop
-        instant_output(post) unless stream_printed.include? post.id
+        instant_output(post) unless printed_item.include? post.id
       end
 
       while !notification_print_queue.empty?
         notify = notification_print_queue.pop
-        instant_output(notify) unless notification_printed.include? notify.id
+        instant_output(notify) unless printed_item.include? notify.id
       end
     end
 
     def instant_output(item)
-      stream_printed << item.id
+      printed_item << item.id
       info = item.info
       print_registers.each do |pattern|
         if info == pattern[:name]
