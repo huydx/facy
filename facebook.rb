@@ -14,7 +14,8 @@ module Facy
     end
 
     def facebook_post(text)
-      raise FacebookGraphReqError unless id = @graph.put_wall_post(text).fetch("id")
+      ret = @graph.put_wall_post(text)
+      p ret
       instant_output(Item.new(info: 'success', message: "post #{id} has been posted to your wall"))
     end
 

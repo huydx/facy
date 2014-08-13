@@ -63,10 +63,7 @@ module Facy
       EM.run do
         Thread.start do
           while buf = Readline.readline(config[:prompt], true) 
-            print "->", buf, "\n"
-            #unless Readline::HISTORY.count == 1
-            #  Readline::HISTORY.pop if buf.empty?
-            #end
+            execute(buf.strip)
           end
         end
 
@@ -101,6 +98,10 @@ module Facy
       mutex.synchronize do
         block.call
       end
+    end
+
+    def async(&block)
+      Thread.start { block.call }
     end
 
     def stop_process
