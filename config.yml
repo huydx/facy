@@ -2,4 +2,4 @@ app_id: 666851166740481
 app_token: 666851166740481|VfThRE5Qraib9yhri8BLoSpE6pc
 app_secret: efa360c9db9c38c824d3b31b87b21b4e
 redirect_uri: https://www.facebook.com/connect/login_success.html
-permission: friends_status,manage_notifications,publish_stream,read_friendlists,read_stream,user_status
+permission: friends_status,manage_notifications,publish_actions,read_friendlists,read_stream,user_status

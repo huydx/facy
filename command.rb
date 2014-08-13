@@ -26,5 +26,9 @@ module Facy
     command :post do |text|
       async { facebook_post(text) }
     end
+
+    command :like do |post_id|
+      async { facebook_like(post_id) }
+    end
   end
 end
