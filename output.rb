@@ -1,31 +1,36 @@
 module Facy
   module Output
-    def output
+    def periodic_output
       while !stream_print_queue.empty?
         post = stream_print_queue.pop
-        stream_print(post) unless stream_printed.include? post["id"]
+        instant_output(post) unless stream_printed.include? post.id
       end
+
       while !notification_print_queue.empty?
         notify = notification_print_queue.pop
-        notifications_print(notify) unless notifications_printed.include? notify["id"]
+        instant_output(notify) unless notification_printed.include? notify.id
       end
     end
 
-    def stream_print(post)
-      stream_printed.add post["id"]
-      uname   = post["from"]["name"]
-      message = strip(post["message"])
-      link    = post["link"]
-      time    = Date.parse(post["created_time"])
-      puts <<-STREAM_ITEM
-\e[0;34m #{uname} \e[m : #{message} \e[0;34m #{link}\e[m #{time.strftime("%m/%d %H:%M")}
-      STREAM_ITEM
+    def instant_output(item)
+      stream_printed << item.id
+      info = item.info
+      print_registers.each do |pattern|
+        if info == pattern[:name]
+          pattern[:block].call(item)
+        end
+      end
+    rescue
     end
 
-    def notifications_print(notify)
-
+    def print_registers
+      @print_registers ||= []
     end
-    
+
+    def print_register(item_name, &block)
+      print_registers << {name: item_name, block: block}
+    end
+
     def strip(text)
       text.truncate(50) if text
     end
@@ -48,6 +53,37 @@ module Facy
     def stop_animation
       @stop_animation ||= true
     end
+  end
+  
+  init do
+    print_registers.clear
+
+    print_register :feed do |item|
+      info = item.info.to_s.capitalize.colorize(0,31) 
+      type = item.data.type.colorize(0,34)
+      user = item.data.user.colorize(0,41)
+      content = item.data.content.colorize(0,55)
+
+      puts "[#{info}] #{user} #{content}"
+    end
+    
+    print_register :notification do |item|
+      info = item.info.to_s.capitalize.colorize(0,31) 
+      user = item.data.user.colorize(0,41)
+      content = item.data.content.colorize(0,55) 
+
+      puts "[#{info}] #{user} #{content}"
+    end
+
+    print_register :link do |item|
+      
+    end
+
+    print_register :photo do |item|
+
+    end
+
+    
   end
 
   extend Output

@@ -24,11 +24,6 @@ module Facy
       @insert_lock ||= Monitor.new
     end
     
-    #convert facebook graph return to Item#class
-    def graph2item(graph_item)
-       
-    end
-
     def insert_item(item)
       insert_lock.synchronize do
         _insert_item(item)
@@ -39,8 +34,6 @@ module Facy
       item_print_queue << item
     end
   end
-
-  class Item < OpenStruct; end
 
   extend InputQueue
 end

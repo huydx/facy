@@ -78,7 +78,7 @@ module Facy
         
         Thread.start do
           EM.add_periodic_timer(config[:output_interval]) do
-            output
+            periodic_output 
           end
         end
 

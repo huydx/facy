@@ -5,22 +5,22 @@ module Facy
     #RULE: all facebook method should be prefix with facebook
     def facebook_stream_fetch
       streams = @graph.get_connections("me", "home")
-      streams.each { |post| stream_print_queue << post }
+      streams.each { |post| stream_print_queue << graph2item(post) }
     end
 
     def facebook_notification_fetch
       notifications = @graph.get_connections("me", "notifications")
-      notifications.each { |notifi| notification_print_queue << notifi }
+      notifications.each { |notifi| notification_print_queue << graph2item(notifi) }
     end
 
     def facebook_post(text)
       raise FacebookGraphReqError unless id = @graph.put_wall_post(text).fetch("id")
-      insert_item(Item.new(info: 'success', message: "post #{id} has been posted to your wall"))
+      instant_output(Item.new(info: 'success', message: "post #{id} has been posted to your wall"))
     end
 
     def facebook_like(post_id)
       raise FacebookGraphReqError unless @graph.put_like(post_id)
-      insert_item(Item.new(info: 'success', message: "post #{post_id} has been liked"))
+      instant_output(Item.new(info: 'success', message: "post #{post_id} has been liked"))
     end
   end 
 
@@ -34,6 +34,4 @@ module Facy
     @graph = Koala::Facebook::API.new(token) 
   end
   extend Facebook
-
-  class FacebookGraphReqError < Exception ; end
 end

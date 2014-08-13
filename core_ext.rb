@@ -1,5 +1,5 @@
 class String
-  def color(text, *code)
-    
+  def colorize(*code)
+    "\e[#{code.join(";")}m #{self} \e[0m" 
   end
 end
