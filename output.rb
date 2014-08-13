@@ -13,7 +13,6 @@ module Facy
     end
 
     def instant_output(item)
-      p "alaaaaaa"
       printed_item << item.id if item.id
       info = item.info
       print_registers.each do |pattern|
@@ -58,26 +57,54 @@ module Facy
     def error(text)
       puts text
     end
+
+    def username_color_map
+      @username_color_map ||= {}
+    end
+
+    def username_color_table
+      @username_color_table ||= []
+    end
+
+    def username_color_table_load
+      max_range = 256 
+      step      = 9
+      start     = current = 1
+      (1..max_range).each do |col|
+        username_color_table << [38,5,current]
+        current = current + step
+        current = current % max_range if current > max_range
+      end
+    end 
+
+    def username_color(uname)
+      return username_color_map[uname] if username_color_map[uname]
+      username_color_table_load if username_color_table.empty?
+      return (username_color_map[uname] = username_color_table.pop)
+    end
   end
   
   init do
     print_registers.clear
+    username_color_table_load
 
     print_register :feed do |item|
-      info = item.info.to_s.capitalize.colorize(0,31) 
+      info = item.info.to_s.capitalize.colorize(35,8,118) 
       type = item.data.type.colorize(0,34)
-      user = item.data.user.colorize(0,41)
+      uname = item.data.user
+      uname = uname.colorize(username_color(uname))
       content = item.data.content.colorize(0,55)
 
-      puts "[#{info}] #{user} #{content}"
+      puts "[#{info}] #{uname} #{content}"
     end
     
     print_register :notification do |item|
       info = item.info.to_s.capitalize.colorize(0,31) 
-      user = item.data.user.colorize(0,41)
+      uname = item.data.user
+      uname = uname.colorize(username_color(uname))
       content = item.data.content.colorize(0,55) 
 
-      puts "[#{info}] #{user} #{content}"
+      puts "[#{info}] #{uname} #{content}"
     end
 
     print_register :link do |item|

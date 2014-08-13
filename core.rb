@@ -70,19 +70,19 @@ module Facy
 
         Thread.start do
           EM.add_periodic_timer(config[:stream_fetch_interval]) do
-            #facebook_stream_fetch
+            facebook_stream_fetch
           end
         end
         
         Thread.start do
           EM.add_periodic_timer(config[:output_interval]) do
-            #periodic_output 
+            periodic_output 
           end
         end
 
         Thread.start do
           EM.add_periodic_timer(config[:notification_fetch_interval]) do
-            #facebook_notification_fetch
+            facebook_notification_fetch
           end
         end
 

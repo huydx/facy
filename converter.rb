@@ -32,8 +32,6 @@ module Facy
                       graph_item["message"]
                     end
                   end
-        
-        link = graph_item["actions"].keep_if{|c|c["name"]=="Comment"}.first["link"] if graph_item["actions"]
 
         Item.new({
           id: graph_item["id"],
@@ -42,7 +40,7 @@ module Facy
             type: graph_item["type"],
             user: graph_item["from"]["name"],
             content: content,
-            link: link
+            link: graph_item["link"]
           },
           date: graph_item["created_time"],
         })
