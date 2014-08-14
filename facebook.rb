@@ -40,7 +40,9 @@ module Facy
     end
 
     def retry_wait
+      puts "error: retry in #{config[:retry_interval]}"
       sleep(config[:retry_interval])
+      puts "retrying...."
     end
 
     def login

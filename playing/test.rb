@@ -1,6 +1,16 @@
-require "active_support/dependencies"
+class A
+  def foo
+    raise Exception.new
+  rescue Exception => e
+    p 'catch 1'
+    begin
+      raise Exception.new
+    rescue Exception
+      p 'catch 2'
+    end
+  rescue Exception => e
+    p 'catch 2'
+  end
+end
 
-%w(
-  module1
-  module2
-).each { |m| require_dependency "./#{m}"}
+A.new.foo

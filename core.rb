@@ -106,7 +106,7 @@ module Facy
     end
 
     def stop_process
-      puts "facy going to stop..."
+      puts "\nfacy going to stop..."
       Thread.new {
         EventMachine.stop 
       }.join

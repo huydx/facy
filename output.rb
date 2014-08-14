@@ -1,6 +1,7 @@
 module Facy
   module Output
     def periodic_output
+      new_line
       while !stream_print_queue.empty?
         post = stream_print_queue.pop
         instant_output(post) unless printed_item.include? post.id
@@ -10,6 +11,7 @@ module Facy
         notify = notification_print_queue.pop
         instant_output(notify) unless printed_item.include? notify.id
       end
+      Readline.refresh_line
     end
 
     def instant_output(item)
@@ -56,6 +58,10 @@ module Facy
 
     def error(text)
       puts text
+    end
+
+    def new_line
+      puts ''
     end
 
     def username_color_map
