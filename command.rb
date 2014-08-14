@@ -40,7 +40,9 @@ module Facy
       async { facebook_post(text) }
     end
 
-    command :like do |post_id|
+    command :like do |post_code|
+      item = post_code_reverse_map[post_code]
+      post_id = item.id if item.is_a?(Item)
       async { facebook_like(post_id) }
     end
 

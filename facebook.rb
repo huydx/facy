@@ -23,7 +23,10 @@ module Facy
 
     def facebook_post(text)
       ret = @graph.put_wall_post(text)
-      instant_output(Item.new(info: 'success', message: "post #{ret["id"]} has been posted to your wall")) if ret["id"]
+      instant_output(Item.new(
+        info: :info, 
+        message: "post #{ret["id"]} has been posted to your wall")
+       ) if ret["id"]
     rescue Exception => e
       error e 
     end
@@ -40,9 +43,8 @@ module Facy
     end
 
     def retry_wait
-      puts "error: retry in #{config[:retry_interval]}"
+      instant_output(Item.new(info: :error, content: "facebook connection error, retry in #{config[:retry_interval]} seconds"))
       sleep(config[:retry_interval])
-      puts "retrying...."
     end
 
     def login
