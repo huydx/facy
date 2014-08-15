@@ -135,7 +135,7 @@ module Facy
       uname = uname.colorize(username_color(uname))
       content = item.data.content.colorize(0,55)
 
-      puts "[#{code}][#{info}] #{uname} #{content}"
+      puts "[#{code}][#{info}] <#{type}> #{uname} #{content}"
     end
     
     print_register :notification do |item|
@@ -164,10 +164,8 @@ module Facy
     end
 
     print_register :error do |item|
-      new_line
       info = "Error".colorize(0,31)
       puts "[#{info}] #{item.content}"
-      clear_line
     end
   end
 

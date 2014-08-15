@@ -49,5 +49,15 @@ module Facy
     command :exit do 
       stop_process  
     end
+
+    command :open do |post_code|
+      item = post_code_reverse_map[post_code]
+      link = item.data.link if item.is_a?(Item)
+      if link
+        browse(link)
+      else
+        instant_output(Item.new(info: :error, content: "sorry this post can not be openned"))
+      end
+    end
   end
 end

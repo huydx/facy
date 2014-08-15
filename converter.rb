@@ -32,6 +32,9 @@ module Facy
                       graph_item["message"]
                     end
                   end
+        
+        link = graph_item["link"] ||
+          (graph_item["actions"] && graph_item["actions"].first["link"])
 
         Item.new({
           id: graph_item["id"],
@@ -40,7 +43,7 @@ module Facy
             type: graph_item["type"],
             user: graph_item["from"]["name"],
             content: content,
-            link: graph_item["link"]
+            link: link 
           },
           date: graph_item["created_time"],
         })
