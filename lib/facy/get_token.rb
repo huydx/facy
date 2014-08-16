@@ -46,7 +46,7 @@ module Facy
       user_token = STDIN.gets.chomp
       new_line
 
-      File.open(File.expand_path('config.yml', '../'), 'w') do |f|
+      File.open(File.expand_path('../../../config.yml', __FILE__), 'w') do |f|
         conf = {
           "app_id" => config[:app_id],
           "app_token" => config[:app_token],

@@ -1,5 +1,0 @@
-app_id: 
-app_token: 
-app_secret:
-redirect_uri: https://www.facebook.com/connect/login_success.html
-permission: friends_status,manage_notifications,publish_actions,read_friendlists,read_stream,user_status

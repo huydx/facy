@@ -40,7 +40,7 @@ module Facy
     end
 
     def default_config
-      config = YAML.load_file(File.expand_path("config.yml", "../"))
+      config = YAML.load_file(File.expand_path("../../../config.yml", __FILE__))
       {
         session_file_folder: "/tmp",
         session_file_name: "_facy_session.yml",
