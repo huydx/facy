@@ -1,5 +1,3 @@
-require "pry"
-
 module Facy
   module GetToken
     def get_tokens

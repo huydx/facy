@@ -9,6 +9,9 @@
   active_support/dependencies
 ).each { |lib| require lib }
 
+Thread.abort_on_exception = true
+Encoding.default_external = Encoding.find('UTF-8')
+
 %w(
  core_ext
  core
@@ -20,6 +23,4 @@
  command
  converter
  exception
-).each { |file| require_dependency File.expand_path("#{file}", ".") }
-
-Facy.start({})
+).each { |file| require_dependency File.expand_path("../facy/#{file}", __FILE__) }
