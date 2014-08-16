@@ -23,9 +23,11 @@ module Facy
               graph_item["message"]
             end
           when "photo"
+            "share a photo: #{graph_item['message']}"
           when "checkin"
+            "checkin"
           when "video"
-            graph_item["message"]
+            "share a video: #{graph_item['message']}"
           when "link"
             if graph_item["message"].nil?
               graph_item["link"]

@@ -33,6 +33,18 @@ module Facy
       error e 
     end
 
+    def facebook_set_seen(notification_id)
+      @graph.put_connection("#{notification_id}", "unread=false") 
+    rescue Exception => e
+      error e
+    end
+
+    def facebook_comment(post_id, comment)
+      @graph.put_comment(post_id, comment)
+    rescue Exception => e
+      error e
+    end
+
     def retry_login
       login
     end

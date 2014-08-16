@@ -1,16 +1,11 @@
-class A
-  def foo
-    raise Exception.new
-  rescue Exception => e
-    p 'catch 1'
-    begin
-      raise Exception.new
-    rescue Exception
-      p 'catch 2'
-    end
-  rescue Exception => e
-    p 'catch 2'
+class String
+  def colorize(*code)
+    "\e[#{code.join(";")}m#{self}\e[0m"
+  end
+
+  def strip
+    self.truncate(50)
   end
 end
 
-A.new.foo
+print "[#{"test".colorize(38,5,8)}]"

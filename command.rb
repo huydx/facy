@@ -47,6 +47,7 @@ module Facy
     end
 
     command :like do |post_code|
+      post_code = "$#{post_code}"
       item = post_code_reverse_map[post_code]
       post_id = item.id if item.is_a?(Item)
       async { 
@@ -60,9 +61,10 @@ module Facy
     end
 
     command :open do |post_code|
-      post_code = post_code.split("$")[1]
+      post_code = "$#{post_code}"
       item = post_code_reverse_map[post_code]
       link = item.data.link if item.is_a?(Item)
+      p link
       if link
         browse(link)
       else
@@ -70,12 +72,33 @@ module Facy
       end
     end
 
-    comp_proc = proc {|s| 
+    command :comment do |content|
+      content = content.split(" ")
+      post_code = "$#{content.first}"
+      comment = content.tap{|c|c.shift}.join(' ')
+      
+      item = post_code_reverse_map[post_code]
+      post_id = item.id if item.is_a?(Item)
+
+      async {
+        ret = facebook_comment(post_id, comment)
+        instant_output(Item.new(info: :info, content: 'comment success')) if ret
+      }
+    end
+
+    command :seen do |notif_code|
+      async {
+        ret = facebook_set_seen(notif_code)
+        instant_output(Item.new(info: :info, content: 'unseen success')) if ret
+      }
+    end
+
+    completion_proc = proc {|s| 
       commands
         .map{|c|c[:pattern]}
         .map{|c|":#{c.to_s}"}
         .grep(/^#{Regexp.escape(s)}/)
     }
-    Readline.completion_proc = comp_proc
+    Readline.completion_proc = completion_proc
   end
 end
