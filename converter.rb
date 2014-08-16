@@ -14,24 +14,25 @@ module Facy
           date: graph_item["created_time"],
         })
       else
-        content = case graph_item["type"]
-                  when "status"
-                    if graph_item["message"].nil?
-                      graph_item["story"]
-                    else
-                      graph_item["message"]
-                    end
-                  when "photo"
-                  when "checkin"
-                  when "video"
-                    graph_item["message"]
-                  when "link"
-                    if graph_item["message"].nil?
-                      graph_item["link"]
-                    else
-                      graph_item["message"]
-                    end
-                  end
+        content = 
+          case graph_item["type"]
+          when "status"
+            if graph_item["message"].nil?
+              graph_item["story"]
+            else
+              graph_item["message"]
+            end
+          when "photo"
+          when "checkin"
+          when "video"
+            graph_item["message"]
+          when "link"
+            if graph_item["message"].nil?
+              graph_item["link"]
+            else
+              graph_item["message"]
+            end
+          end
         
         link = 
           (graph_item["actions"] && graph_item["actions"].first["link"]) ||

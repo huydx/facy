@@ -69,5 +69,13 @@ module Facy
         async { instant_output(Item.new(info: :error, content: "sorry this post can not be openned")) }
       end
     end
+
+    comp_proc = proc {|s| 
+      commands
+        .map{|c|c[:pattern]}
+        .map{|c|":#{c.to_s}"}
+        .grep(/^#{Regexp.escape(s)}/)
+    }
+    Readline.completion_proc = comp_proc
   end
 end
