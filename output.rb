@@ -164,8 +164,10 @@ module Facy
     end
 
     print_register :error do |item|
+      new_line
       info = "Error".colorize(0,31)
       puts "[#{info}] #{item.content}"
+      clear
     end
   end
 

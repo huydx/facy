@@ -22,18 +22,13 @@ module Facy
     end
 
     def facebook_post(text)
-      ret = @graph.put_wall_post(text)
-      instant_output(Item.new(
-        info: :info, 
-        message: "post #{ret["id"]} has been posted to your wall")
-       ) if ret["id"]
+      @graph.put_wall_post(text)
     rescue Exception => e
       error e 
     end
 
     def facebook_like(post_id)
-      ret = @graph.put_like(post_id)
-      instant_output(Item.new(info: :info, content: "like success")) if ret
+      @graph.put_like(post_id)
     rescue Exception => e
       error e 
     end

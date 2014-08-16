@@ -37,13 +37,22 @@ module Facy
   init do
     commands.clear
     command :post do |text|
-      async { facebook_post(text) }
+      async { 
+        ret = facebook_post(text) 
+        instant_output(Item.new(
+          info: :info, 
+          message: "post #{ret["id"]} has been posted to your wall")
+         ) if ret["id"]
+      }
     end
 
     command :like do |post_code|
       item = post_code_reverse_map[post_code]
       post_id = item.id if item.is_a?(Item)
-      async { facebook_like(post_id) }
+      async { 
+        ret = facebook_like(post_id) 
+        instant_output(Item.new(info: :info, content: "like success")) if ret
+      }
     end
 
     command :exit do 
@@ -51,12 +60,13 @@ module Facy
     end
 
     command :open do |post_code|
+      post_code = post_code.split("$")[1]
       item = post_code_reverse_map[post_code]
       link = item.data.link if item.is_a?(Item)
       if link
         browse(link)
       else
-        instant_output(Item.new(info: :error, content: "sorry this post can not be openned"))
+        async { instant_output(Item.new(info: :error, content: "sorry this post can not be openned")) }
       end
     end
   end

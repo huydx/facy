@@ -33,8 +33,9 @@ module Facy
                     end
                   end
         
-        link = graph_item["link"] ||
-          (graph_item["actions"] && graph_item["actions"].first["link"])
+        link = 
+          (graph_item["actions"] && graph_item["actions"].first["link"]) ||
+          graph_item["link"]
 
         Item.new({
           id: graph_item["id"],
