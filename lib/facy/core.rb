@@ -40,7 +40,7 @@ module Facy
     end
 
     def default_config
-      config = YAML.load_file(File.expand_path("config.yml", "."))
+      config = YAML.load_file(File.expand_path("config.yml", "../"))
       {
         session_file_folder: "/tmp",
         session_file_name: "_facy_session.yml",
@@ -48,6 +48,7 @@ module Facy
         app_token: config['app_token'],
         app_secret: config['app_secret'],
         permission: config['permission'],
+        redirect_uri: "http://www.facebook.com/connect/login_success.html",
         prompt: "facy> ",
         stream_fetch_interval: 2,
         notification_fetch_interval: 2,
