@@ -1,5 +1,4 @@
 %w(
-  httparty
   koala
   readline
   yaml
