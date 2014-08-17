@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module Facy
   module GetToken
     def session_file
