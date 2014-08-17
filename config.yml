@@ -1,4 +1,4 @@
 ---
-app_id: '1451572448458736'
+app_id:
 permission: friends_status,manage_notifications,publish_stream,read_friendlists,read_stream,user_status
-granted: true
+granted:
