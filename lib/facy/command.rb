@@ -45,6 +45,7 @@ module Facy
          ) if ret["id"]
       }
     end
+    help :post, 'usage :post [post content] <post to wall>', ':post how a nice day!'
 
     command :like do |post_code|
       post_code = "$#{post_code}"
@@ -55,10 +56,12 @@ module Facy
         instant_output(Item.new(info: :info, content: "like success")) if ret
       }
     end
+    help :like, 'usage :like [post_code] <like a post, post_code is a code in the head of each post without $>', ':like za'
 
     command :exit do 
       stop_process  
     end
+    help :exit, 'usage :exit <quit facy>'
 
     command :open do |post_code|
       post_code = "$#{post_code}"
@@ -71,6 +74,7 @@ module Facy
         async { instant_output(Item.new(info: :error, content: "sorry this post can not be openned")) }
       end
     end
+    help :open, 'usage :open [post_code] <open a post in browser, post code is a code in the head of each post without $>', ':open za'
 
     command :comment do |content|
       content = content.split(" ")
@@ -85,6 +89,7 @@ module Facy
         instant_output(Item.new(info: :info, content: 'comment success')) if ret
       }
     end
+    help :comment, 'usage :comment [post_code] [comment content] <comment to a post, post code is a code in the head of each post without $>', ':comment za how fun is it!'
 
     command :seen do |notif_code|
       async {

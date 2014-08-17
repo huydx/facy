@@ -167,7 +167,12 @@ module Facy
       new_line
       info = "Error".colorize(0,31)
       puts "[#{info}] #{item.content}"
-      clear
+      clear_line
+    end
+
+    print_register :help do |item|
+      puts item.content
+      puts "example: #{item.extra}" if item.extra
     end
   end
 

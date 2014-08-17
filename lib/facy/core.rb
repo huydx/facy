@@ -31,7 +31,7 @@ module Facy
         permission: config['permission'],
         granted: config['granted'],
         redirect_uri: "http://www.facebook.com/connect/login_success.html",
-        prompt: "facy> ",
+        prompt: "\e[15;48;5;27m f \e[0m >> ",
         stream_fetch_interval: 2,
         notification_fetch_interval: 2,
         output_interval: 3,

@@ -18,6 +18,7 @@ Encoding.default_external = Encoding.find('UTF-8')
  get_token
  output
  command
+ help
  facebook
  input_queue
  command
