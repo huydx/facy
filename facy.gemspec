@@ -18,9 +18,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.5"
-  spec.add_development_dependency "koala", "~>1.10"
-  spec.add_development_dependency "activesupport", "~>4.0"
-  spec.add_development_dependency "launchy", "~>2.4"
-  spec.add_development_dependency "eventmachine", "~>1.0"
+  spec.add_runtime_dependency "bundler", "~> 1.5"
+  spec.add_runtime_dependency "koala", "~>1.10"
+  spec.add_runtime_dependency "activesupport", "~>4.0"
+  spec.add_runtime_dependency "launchy", "~>2.4"
+  spec.add_runtime_dependency "eventmachine", "~>1.0"
 end
