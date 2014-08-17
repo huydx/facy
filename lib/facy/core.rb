@@ -14,40 +14,22 @@ module Facy
 
     def _init
       load_config
+      login_flow
       inits.each { |block| class_eval(&block) }
     end
 
     def load_config
       config.reverse_update(default_config)
-      save_session_file(get_tokens) unless load_session_file
-    end
-
-    def session_file
-      File.expand_path(config[:session_file_name], config[:session_file_folder])
-    end
-
-    def save_session_file(auth_hash)
-      File.open(session_file, "w") { |f| f.write auth_hash.to_yaml } 
-    end
-
-    def load_session_file
-      session = YAML.load_file(session_file)
-      config[:session_key] = session["session_key"]
-      config[:uid] = session["uid"]
-      return true
-    rescue Errno::ENOENT #file not found
-      return false
     end
 
     def default_config
       config = YAML.load_file(File.expand_path("../../../config.yml", __FILE__))
       {
         session_file_folder: "/tmp",
-        session_file_name: "_facy_session.yml",
+        session_file_name: ".facy_access_token.yml",
         app_id: config['app_id'],
-        app_token: config['app_token'],
-        app_secret: config['app_secret'],
         permission: config['permission'],
+        granted: config['granted'],
         redirect_uri: "http://www.facebook.com/connect/login_success.html",
         prompt: "facy> ",
         stream_fetch_interval: 2,

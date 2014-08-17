@@ -1,5 +1,10 @@
 module Facy
   module Facebook
+    module ConnectionStatus
+      NORMAL  = 0
+      ERROR   = 1
+    end
+
     attr_reader :authen_hash, :rest
 
     #RULE: all facebook method should be prefix with facebook
@@ -54,13 +59,12 @@ module Facy
       sleep(config[:retry_interval])
     end
 
+    def status
+      @status ||= ConnectionStatus::NORMAL
+    end
+
     def login
-      @oauth = Koala::Facebook::OAuth.new(
-        config[:app_id], 
-        config[:app_secret], 
-        config[:redirect_uri]
-      )
-      token = @oauth.get_token_from_session_key(config[:session_key])
+      token = config[:access_token]
       @graph = Koala::Facebook::API.new(token)
     end
   end 
