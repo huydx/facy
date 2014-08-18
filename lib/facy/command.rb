@@ -98,6 +98,14 @@ module Facy
       }
     end
 
+    command :debug do |post_code|
+      post_code = "$#{post_code}"
+      item = post_code_reverse_map[post_code]
+
+      print JSON.pretty_generate(item.raw)
+      puts "" 
+    end
+
     completion_proc = proc {|s| 
       commands
         .map{|c|c[:pattern]}

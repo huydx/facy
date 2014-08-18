@@ -4,7 +4,7 @@ module Facy
     def graph2item(graph_item)
       id = graph_item["id"]
       if id =~ /^notif_(.+)$/
-        Item.new({
+        item = Item.new({
           id: id,
           info: :notification,
           data: {
@@ -40,18 +40,20 @@ module Facy
           (graph_item["actions"] && graph_item["actions"].first["link"]) ||
           graph_item["link"]
 
-        Item.new({
+        item = Item.new({
           id: graph_item["id"],
           info: :feed,
           data: {
             type: graph_item["type"],
             user: graph_item["from"]["name"],
             content: content,
-            link: link 
+            link: link
           },
           date: graph_item["created_time"],
         })
       end
+      item.raw = graph_item
+      return item
     end
   end
 
