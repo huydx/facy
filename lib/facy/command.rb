@@ -119,7 +119,7 @@ module Facy
           instant_output(Item.new(info: :error, content: "this post has no image link"))
         end
       else
-        instant_output(Item.new(info: :error, content: "use facy --enable_img_view to enable image viewer"))
+        instant_output(Item.new(info: :error, content: "use facy -enable_img_view to enable image viewer"))
       end
     end
     
@@ -130,7 +130,7 @@ module Facy
       else
         instant_output(Item.new(
           info: :info, 
-          content: "you need to start facy with --debug true option to enable log"
+          content: "you need to start $facy -debug option to enable log"
         ))
       end
     end
