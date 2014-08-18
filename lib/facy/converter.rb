@@ -47,6 +47,7 @@ module Facy
             type: graph_item["type"],
             user: graph_item["from"]["name"],
             content: content,
+            picture: graph_item["picture"],
             link: link
           },
           date: graph_item["created_time"],

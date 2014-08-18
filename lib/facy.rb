@@ -8,6 +8,7 @@
   active_support
   active_support/core_ext
   active_support/dependencies
+  RMagick
 ).each { |lib| require lib }
 
 Thread.abort_on_exception = true
@@ -28,4 +29,5 @@ Encoding.default_external = Encoding.find('UTF-8')
  converter
  exception
  option_parser
+ image_viewer
 ).each { |file| require_dependency File.expand_path("../facy/#{file}", __FILE__) }
