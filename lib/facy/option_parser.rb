@@ -11,6 +11,10 @@ module Facy
           config[:debug_log] = v
         end
 
+        opt.on('--enable_img_view VALUE') do |v|
+          config[:enable_img_view] = v
+        end
+
         opt.parse!(argv)
       end
     end

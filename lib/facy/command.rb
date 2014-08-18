@@ -109,13 +109,17 @@ module Facy
     help :view_raw, "view raw json output of a post", ":view_raw [post_code]"
 
     command :view_img do |post_code|
-      post_code = "$#{post_code}"
-      item = post_code_reverse_map[post_code]
-      
-      if item.data.picture
-        view_img(item.data.picture)
+      if config[:enable_img_view]
+        post_code = "$#{post_code}"
+        item = post_code_reverse_map[post_code]
+        
+        if item.data.picture
+          view_img(item.data.picture)
+        else
+          instant_output(Item.new(info: :error, content: "this post has no image link"))
+        end
       else
-        instant_output(Item.new(info: :error, content: "this post has no image link"))
+        instant_output(Item.new(info: :error, content: "use facy --enable_img_view to enable image viewer"))
       end
     end
     

@@ -1,4 +1,5 @@
 %w(
+  rmagick
   koala
   readline
   yaml
@@ -8,7 +9,6 @@
   active_support
   active_support/core_ext
   active_support/dependencies
-  RMagick
 ).each { |lib| require lib }
 
 Thread.abort_on_exception = true
