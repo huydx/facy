@@ -17,6 +17,7 @@ module Facy
       return unless facebook_status == ConnectionStatus::NORMAL
       streams = @graph.get_connections("me", "home")
       streams.each { |post| stream_print_queue << graph2item(post) }
+      log(:info, "fetch stream ok")
     rescue Koala::Facebook::ServerError
       retry_wait
     rescue Exception => e
@@ -28,6 +29,7 @@ module Facy
       return unless facebook_status == ConnectionStatus::NORMAL
       notifications = @graph.get_connections("me", "notifications")
       notifications.each { |notifi| notification_print_queue << graph2item(notifi) }
+      log(:info, "fetch notification ok")
     rescue Koala::Facebook::ServerError
       retry_wait
     rescue Exception => e
@@ -39,6 +41,7 @@ module Facy
       @graph.put_wall_post(text)
     rescue Exception => e
       error e 
+      log(:error, e.message)
       expired_session
     end
 
@@ -46,6 +49,7 @@ module Facy
       @graph.put_like(post_id)
     rescue Exception => e
       error e 
+      log(:error, e.message)
       expired_session
     end
 
@@ -53,6 +57,7 @@ module Facy
       @graph.put_connection("#{notification_id}", "unread=false") 
     rescue Exception => e
       error e
+      log(:error, e.message)
       expired_session
     end
 
@@ -60,6 +65,7 @@ module Facy
       @graph.put_comment(post_id, comment)
     rescue Exception => e
       error e
+      log(:error, e.message)
       expired_session
     end
 
@@ -70,13 +76,15 @@ module Facy
     end
 
     def retry_wait
-      instant_output(Item.new(info: :error, content: "facebook connection error, retry in #{config[:retry_interval]} seconds"))
+      log(:error, "facebook server error, need retry")
+      instant_output(Item.new(info: :error, content: "facebook server error, retry in #{config[:retry_interval]} seconds"))
       sleep(config[:retry_interval])
     end
 
     def login
       token = config[:access_token]
       @graph = Koala::Facebook::API.new(token)
+      log(:info, "login ok at facebook module: #{@graph}")
     end
   end 
 

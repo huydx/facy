@@ -9,4 +9,5 @@ puts %q{
 }
 print "\e[0m"
 require 'facy'
+Facy.parse(ARGV)
 Facy.start({})

@@ -11,6 +11,7 @@ module Facy
       puts "★　go to #{developer_page} and enter our app_id: "
       browse(developer_page)
       config[:app_id] = STDIN.gets.chomp
+      log(:info, "app_id setup success #{config[:app_id]}")
     end
 
     def setup_app_secret
@@ -18,6 +19,7 @@ module Facy
       puts "★　go to #{developer_page} and enter our app_secret: "
       browse(developer_page)
       config[:app_secret] = STDIN.gets.chomp
+      log(:info, "app_secret setup success #{config[:app_id]}")
     end
 
     def save_config_file
@@ -36,6 +38,7 @@ module Facy
       session = YAML.load_file(session_file)
       config[:access_token] = session["access_token"]
       return (ret = config[:access_token].nil? ? false : true)
+      log(:info, "session file load success #{config[:access_token]}")
     rescue Errno::ENOENT #file not found
       return false
     end
@@ -43,14 +46,19 @@ module Facy
     def save_session_file
       hash = {"access_token" => config[:access_token]}
       File.open(session_file, "w") { |f| f.write hash.to_yaml } 
+      log(:info, "session file save success at #{session_file}")
     end
 
     def exchange_long_term_token
       oauth = Koala::Facebook::OAuth.new(config[:app_id], config[:app_secret]) 
       new_token = oauth.exchange_access_token_info(config[:access_token])
-      raise Exception.new("can not accquire new access token") unless new_token["access_token"]
-      
-      config[:access_token] = new_token["access_token"]
+      if new_token["access_token"]
+        config[:access_token] = new_token["access_token"]
+        log(:info, "long term access token exchanged success")
+      else
+        log(:error, "long term access token exchanged failed")
+        raise Exception.new("can not accquire new access token") unless new_token["access_token"]
+      end
     end
 
     def grant_access
@@ -72,6 +80,7 @@ module Facy
       browse(developer_page)
       token = STDIN.gets.chomp
       config[:access_token] = token
+      log(:info, "setup access token success: #{token}")
     end
 
     def login_flow
@@ -91,6 +100,7 @@ module Facy
         exchange_long_term_token
         save_session_file
       end
+      log(:info, "login flow success")
     end
 
     def browse(url)

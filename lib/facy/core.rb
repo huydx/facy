@@ -16,10 +16,12 @@ module Facy
       load_config
       login_flow
       inits.each { |block| class_eval(&block) }
+      log(:info, "core module init success")
     end
 
     def load_config
       config.reverse_update(default_config)
+      log(:info, "config loaded #{config.to_s}")
     end
 
     def default_config
@@ -27,6 +29,8 @@ module Facy
       {
         session_file_folder: "/tmp",
         session_file_name: ".facy_access_token.yml",
+        log_folder: "/tmp",
+        log_file_name: ".facy_log",
         app_id: config['app_id'],
         app_secret: config['app_secret'],
         permission: config['permission'],

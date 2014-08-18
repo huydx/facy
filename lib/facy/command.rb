@@ -9,6 +9,7 @@ module Facy
     end
 
     def execute(text)
+      text.strip!
       rule, target = match_single_command(text) || match_target_command(text)
       commands.each do |c|
         if rule.to_s == c[:pattern].to_s.split(":").first
@@ -20,13 +21,13 @@ module Facy
       error e.backtrace
     end
 
-    def match_single_command(text)
+    def match_target_command(text)
       text =~ /^:(\S*) (.+)$/
       return [$1, $2] if $1 && $2
       return nil
     end
 
-    def match_target_command(text)
+    def match_single_command(text)
       text =~ /^:(\S*)$/
       return $1
     end
@@ -98,13 +99,27 @@ module Facy
       }
     end
 
-    command :debug do |post_code|
+    command :view_raw do |post_code|
       post_code = "$#{post_code}"
       item = post_code_reverse_map[post_code]
 
       print JSON.pretty_generate(item.raw)
       puts "" 
     end
+    help :view_raw, "view raw json output of a post", ":view_raw [post_code]"
+    
+    command :dump_log do
+      if config[:debug_log]
+        dump_log
+        instant_output(Item.new(info: :info, content: "dump log success to #{log_file}"))
+      else
+        instant_output(Item.new(
+          info: :info, 
+          content: "you need to start facy with --debug true option to enable log"
+        ))
+      end
+    end
+    help :dump_log, "dump debug log to file", ":dump_log"
 
     completion_proc = proc {|s| 
       commands

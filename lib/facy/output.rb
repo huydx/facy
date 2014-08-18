@@ -160,14 +160,12 @@ module Facy
       info = item.info.to_s.capitalize.colorize(0,31) 
       content = item.content
       puts "[#{info}] #{content}"
-      clear_line
     end
 
     print_register :error do |item|
       new_line
       info = "Error".colorize(0,31)
       puts "[#{info}] #{item.content}"
-      clear_line
     end
 
     print_register :help do |item|
