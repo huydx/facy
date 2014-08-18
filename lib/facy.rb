@@ -5,6 +5,7 @@
   thread
   launchy
   eventmachine
+  active_support
   active_support/core_ext
   active_support/dependencies
 ).each { |lib| require lib }

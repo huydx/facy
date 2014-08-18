@@ -45,7 +45,7 @@ module Facy
     end
 
     def error(text)
-      puts text
+      instant_output(Item.new(info: :error, content: text))
     end
 
     def new_line

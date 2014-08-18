@@ -13,10 +13,18 @@ module Facy
       config[:app_id] = STDIN.gets.chomp
     end
 
+    def setup_app_secret
+      developer_page = "https://developers.facebook.com"      
+      puts "★　go to #{developer_page} and enter our app_secret: "
+      browse(developer_page)
+      config[:app_secret] = STDIN.gets.chomp
+    end
+
     def save_config_file
       File.open(File.expand_path('../../../config.yml', __FILE__), 'w') do |f|
         conf = {
           "app_id" => config[:app_id],
+          "app_secret" => config[:app_secret],
           "permission" => config[:permission],
           "granted" => true
         }
@@ -34,7 +42,6 @@ module Facy
 
     def save_session_file
       hash = {"access_token" => config[:access_token]}
-      p session_file
       File.open(session_file, "w") { |f| f.write hash.to_yaml } 
     end
 
@@ -62,6 +69,9 @@ module Facy
     def login_flow
       unless config[:app_id]
         setup_app_id
+      end
+      unless config[:app_secret]
+        setup_app_secret
       end
       unless config[:granted]
         grant_access

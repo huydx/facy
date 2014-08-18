@@ -28,6 +28,7 @@ module Facy
         session_file_folder: "/tmp",
         session_file_name: ".facy_access_token.yml",
         app_id: config['app_id'],
+        app_secret: config['app_secret'],
         permission: config['permission'],
         granted: config['granted'],
         redirect_uri: "http://www.facebook.com/connect/login_success.html",
