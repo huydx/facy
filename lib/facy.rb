@@ -15,7 +15,6 @@ Thread.abort_on_exception = true
 Encoding.default_external = Encoding.find('UTF-8')
 
 %w(
- version
  core_ext
  core
  logger
