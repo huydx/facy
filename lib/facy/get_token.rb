@@ -45,6 +45,14 @@ module Facy
       File.open(session_file, "w") { |f| f.write hash.to_yaml } 
     end
 
+    def exchange_long_term_token
+      oauth = Koala::Facebook::OAuth.new(config[:app_id], config[:app_secret]) 
+      new_token = oauth.exchange_access_token_info(config[:access_token])
+      raise Exception.new("can not accquire new access token") unless new_token["access_token"]
+      
+      config[:access_token] = new_token["access_token"]
+    end
+
     def grant_access
       app_id = config[:app_id]
       redirect_uri = config[:redirect_uri]
@@ -80,6 +88,7 @@ module Facy
 
       unless load_session_file 
         setup_token
+        exchange_long_term_token
         save_session_file
       end
     end
