@@ -12,7 +12,7 @@ I recommend rvm to control the version of installed ruby.
 
 ![](http://i.gyazo.com/01de9c8da6191b79bcec201048361f58.png)
 
-Imageview by asii-art also available by option config
+Imageview by asii-art also available by option config, however image quality is quite bad, so it seems quite useless.
 
 ![](http://i.gyazo.com/ede1444083fda6d16c1ce2531a05aabf.png)
 
