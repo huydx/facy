@@ -1,6 +1,6 @@
 # Facy
 Facy is a terminal client for facebook, which encouraged by #earthquake gem from @jugyo.
-![](https://raw.github.com/huydx/facy/master/document/imgs/facy.gif)
+![](http://i.gyazo.com/a7255d4b23ec04cc35181642cb68fe38.png)
 
 ## Installation
 Install it yourself as:
