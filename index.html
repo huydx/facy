@@ -1,72 +1,120 @@
 <!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Facy by huydx</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Facy</h1>
-        <p>facebook fancy simple terminal interface</p>
-        <p class="view"><a href="https://github.com/huydx/facy">View the Project on GitHub <small>huydx/facy</small></a></p>
-        <ul>
-          <li><a href="https://github.com/huydx/facy/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/huydx/facy/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/huydx/facy">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
+  <title>Facy</title>
+  <meta name="description" content="facebook fancy simple terminal interface">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Facy</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">facebook fancy simple terminal interface</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/huydx/facy/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/huydx/facy/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/huydx/facy" class="code">View Facy on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>
 <a name="facy" class="anchor" href="#facy"><span class="octicon octicon-link"></span></a>Facy</h1>
-<iframe src="http://ghbtns.com/github-btn.html?user=huydx&repo=facy&type=watch&count=true"
-  allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-<iframe src="http://ghbtns.com/github-btn.html?user=huydx&repo=facy&type=follow&count=true"
-  allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-<iframe src="http://ghbtns.com/github-btn.html?user=huydx&repo=facy&type=fork&count=true"
-  allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
 
-<p>Facy is a terminal client for facebook, which encouraged by #earthquake gem from <a href="https://github.com/jugyo" class="user-mention">@jugyo</a>.
-<img src="https://raw.github.com/huydx/facy/master/document/imgs/facy.gif" alt=""></p>
+<p>Facy is a terminal client for facebook, which support streaming-like feature.
+Only supports Ruby 1.9 and later.
+To install facy, we need ruby pre-installed, please refer to <a href="https://www.ruby-lang.org/en/installation/">https://www.ruby-lang.org/en/installation/</a> to know how to install ruby.
+I recommend rvm to control the version of installed ruby.</p>
+
+<ul>
+<li>
+<strong>Homepage</strong>: <a href="http://huydx.com/facy">http://huydx.com/facy</a>
+</li>
+<li>
+<strong>Installation guide</strong>: <a href="https://github.com/huydx/facy/wiki/Installation-Guide">https://github.com/huydx/facy/wiki/Installation-Guide</a>
+</li>
+<li>
+<strong>Usage guide</strong>: <a href="https://github.com/huydx/facy/wiki/Usage-guide">https://github.com/huydx/facy/wiki/Usage-guide</a>
+</li>
+<li>
+<strong>Demo</strong>: <a href="https://www.youtube.com/watch?v=zj9dGlhUXw0">https://www.youtube.com/watch?v=zj9dGlhUXw0</a>
+</li>
+</ul><p><img src="http://i.gyazo.com/01de9c8da6191b79bcec201048361f58.png" alt=""></p>
 
 <h2>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>Install it yourself as:
-$ gem install facy</p>
+<p>Install it yourself as:</p>
 
-<p>and then refer to the <a href="https://github.com/huydx/facy/wiki/Installation-Guide">wiki page</a> to complete the initial setup process.</p>
+<pre><code>$ gem install facy
+</code></pre>
 
-<h2>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+<p>and then refer to the <a href="https://github.com/huydx/facy/wiki/Installation-Guide">wiki page</a> to complete the initial setup process. To setup facy, you need to register facebook developer account, and create your own facebook app.</p>
 
-<h2>
+<ul>
+<li>To register facebook developer account, go to: <a href="https://developers.facebook.com/docs/create-developer-account">https://developers.facebook.com/docs/create-developer-account</a>
+</li>
+<li>After registerd, you can go to <a href="https://developers.facebook.com/apps">https://developers.facebook.com/apps</a> to create your new app</li>
+<li>And then you'are able to setup facy follow <a href="https://github.com/huydx/facy/wiki/Installation-Guide">https://github.com/huydx/facy/wiki/Installation-Guide</a>
+</li>
+</ul><h2>
 <a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
 <ol>
-<li>Fork it ( <a href="http://github.com/">http://github.com/</a>/facy/fork )</li>
+<li>Fork it ( <a href="http://github.com/huydx/facy/fork">http://github.com/huydx/facy/fork</a> )</li>
 <li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
 <li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create new Pull Request</li>
 </ol>
-      </section>
+        </article>
+      </div>
     </div>
     <footer>
-      <p>Project maintained by <a href="https://github.com/huydx">huydx</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+      <div class="owner">
+      <p><a href="https://github.com/huydx" class="avatar"><img src="https://avatars3.githubusercontent.com/u/535718?v=2&amp;s=60" width="48" height="48"></a> <a href="https://github.com/huydx">huydx</a> maintains <a href="https://github.com/huydx/facy">Facy</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="http://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
     </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
-  </body>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/huydx/facy/tarball/master" class="tar">tar</a><a href="https://github.com/huydx/facy/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-41828637-5");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+</body>
 </html>
