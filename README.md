@@ -1,5 +1,6 @@
 # Facy
 Facy is a terminal client for facebook
+
 ![](http://s30.postimg.org/4pyfze4u7/facy.gif)
 
 ## Installation
