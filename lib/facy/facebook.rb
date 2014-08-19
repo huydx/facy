@@ -20,9 +20,10 @@ module Facy
       log(:info, "fetch stream ok")
     rescue Koala::Facebook::ServerError
       retry_wait
+    rescue Koala::Facebook::APIError
+      expired_session
     rescue Exception => e
       error e
-      expired_session
     end
 
     def facebook_notification_fetch
@@ -32,41 +33,52 @@ module Facy
       log(:info, "fetch notification ok")
     rescue Koala::Facebook::ServerError
       retry_wait
+    rescue Koala::Facebook::APIError
+      expired_session
     rescue Exception => e
       error e
-      expired_session
     end
 
     def facebook_post(text)
       @graph.put_wall_post(text)
-    rescue Exception => e
-      error e 
-      log(:error, e.message)
+    rescue Koala::Facebook::ServerError
+      retry_wait
+    rescue Koala::Facebook::APIError
       expired_session
+    rescue Exception => e
+      error e
     end
+
 
     def facebook_like(post_id)
       @graph.put_like(post_id)
-    rescue Exception => e
-      error e 
-      log(:error, e.message)
+    rescue Koala::Facebook::ServerError
+      retry_wait
+    rescue Koala::Facebook::APIError
       expired_session
+    rescue Exception => e
+      error e
     end
 
     def facebook_set_seen(notification_id)
       @graph.put_connection("#{notification_id}", "unread=false") 
+    rescue Koala::Facebook::ServerError
+      retry_wait
+    rescue Koala::Facebook::APIError
+      expired_session
     rescue Exception => e
       error e
-      log(:error, e.message)
-      expired_session
     end
+
 
     def facebook_comment(post_id, comment)
       @graph.put_comment(post_id, comment)
+    rescue Koala::Facebook::ServerError
+      retry_wait
+    rescue Koala::Facebook::APIError
+      expired_session
     rescue Exception => e
       error e
-      log(:error, e.message)
-      expired_session
     end
 
     def expired_session
