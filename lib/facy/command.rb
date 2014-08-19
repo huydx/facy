@@ -44,7 +44,7 @@ module Facy
         ret = facebook_post(text) 
         instant_output(Item.new(
           info: :info, 
-          message: "post #{ret["id"]} has been posted to your wall")
+          content: "post '#{text}' has been posted to your wall")
          ) if ret["id"]
       }
     end
