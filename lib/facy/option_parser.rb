@@ -2,8 +2,6 @@ module Facy
   module OptParser
     def parse(argv)
       OptionParser.new do |opt|
-        require '../lib/facy/version' unless defined?(VERSION)
-        opt.version = VERSION 
         # -h, --h, --help is show usage.
         # -v, --v, --version is show version.
        
