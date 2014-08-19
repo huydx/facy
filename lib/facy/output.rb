@@ -129,30 +129,25 @@ module Facy
 
     print_register :feed do |item|
       code = post_code(item).colorize(38,5,8).strip
-      info = item.info.to_s.capitalize.colorize(38,5,118).strip
-      type = item.data.type.colorize(0,34)
+      info = "♡  #{item.info.to_s.capitalize}".colorize(38,5,118).strip
+      type = item.data.type.colorize(38,5,238)
       uname = item.data.user
+      like_count = item.data.like_count.to_s.colorize(36,48,5,0)
+      comment_count = item.data.comment_count.to_s.colorize(36,48,5,0)
       uname = uname.colorize(username_color(uname))
       content = item.data.content.colorize(0,55)
-
-      puts "[#{code}][#{info}] <#{type}> #{uname} #{content}"
+      date = item.data.date
+      
+      puts "[#{code}][#{info}] #{uname} #{content}  {#{type}} L:#{like_count} C:#{comment_count}"
     end
     
     print_register :notification do |item|
-      info = item.info.to_s.capitalize.colorize(0,31) 
+      info = "☢ #{item.info.to_s.capitalize}".colorize(0,31) 
       uname = item.data.user
       uname = uname.colorize(username_color(uname))
       content = item.data.content.colorize(0,55) 
 
       puts "[#{info}] #{uname} #{content}"
-    end
-
-    print_register :link do |item|
-      
-    end
-
-    print_register :photo do |item|
-
     end
 
     print_register :info do |item|
@@ -171,6 +166,14 @@ module Facy
     print_register :help do |item|
       puts item.content
       puts "example: #{item.extra}" if item.extra
+    end
+
+    print_register :comment do |item|
+      puts "  #{item.from} => #{item.message}"
+    end
+
+    print_register :like do |item|
+      puts "  ♥ #{item.from}"
     end
   end
 

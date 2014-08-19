@@ -18,7 +18,9 @@ module Facy
         end
       end
     rescue Exception => e
-      error e.backtrace
+      error e
+      log(:error, e.message)
+      log(:error, e.backtrace)
     end
 
     def match_target_command(text)
@@ -46,7 +48,7 @@ module Facy
          ) if ret["id"]
       }
     end
-    help :post, 'usage :post [post content] <post to wall>', ':post how a nice day!'
+    help :post, 'post to your own wall', ':post [content]'
 
     command :like do |post_code|
       post_code = "$#{post_code}"
@@ -57,12 +59,12 @@ module Facy
         instant_output(Item.new(info: :info, content: "like success")) if ret
       }
     end
-    help :like, 'usage :like [post_code] <like a post, post_code is a code in the head of each post without $>', ':like za'
+    help :like, 'like a post', ':like [code]'
 
     command :exit do 
       stop_process  
     end
-    help :exit, 'usage :exit <quit facy>'
+    help :exit, 'quit facy', ":exit"
 
     command :open do |post_code|
       post_code = "$#{post_code}"
@@ -75,7 +77,7 @@ module Facy
         async { instant_output(Item.new(info: :error, content: "sorry this post can not be openned")) }
       end
     end
-    help :open, 'usage :open [post_code] <open a post in browser, post code is a code in the head of each post without $>', ':open za'
+    help :open, 'open a post in browser', ':open [code]'
 
     command :comment do |content|
       content = content.split(" ")
@@ -90,7 +92,7 @@ module Facy
         instant_output(Item.new(info: :info, content: 'comment success')) if ret
       }
     end
-    help :comment, 'usage :comment [post_code] [comment content] <comment to a post, post code is a code in the head of each post without $>', ':comment za how fun is it!'
+    help :comment, 'comment to a post,', ':comment [code] [content]'
 
     command :seen do |notif_code|
       async {
@@ -122,6 +124,30 @@ module Facy
         instant_output(Item.new(info: :error, content: "use facy -enable_img_view to enable image viewer"))
       end
     end
+
+    command :view_comments do |post_code|
+      post_code = "$#{post_code}"
+      item = post_code_reverse_map[post_code]
+      comments = item.data.comments
+
+      unless comments.empty?
+        comments.each do |cm|
+          instant_output(Item.new(info: :comment, from: cm["from"]["name"], message: cm["message"]))
+        end
+      end
+    end
+    help :view_comments, "view a comment from a post", ":view_comments [code]"
+
+    command :view_likes do |post_code|
+      post_code = "$#{post_code}"
+      item = post_code_reverse_map[post_code]
+      likes = item.data.likes
+      unless likes.empty?
+        likes.each do |lk|
+          instant_output(Item.new(info: :like, from: lk["name"]))
+        end
+      end
+    end
     
     command :dump_log do
       if config[:debug_log]
@@ -135,6 +161,13 @@ module Facy
       end
     end
     help :dump_log, "dump debug log to file", ":dump_log"
+
+    command :commands do
+      helps.each do |help|
+        puts ":#{help[:target].to_s.colorize(38,5,8)} #{help[:usage]}"
+      end
+    end
+    help :commands, "list all available commands", ":commands"
 
     completion_proc = proc {|s| 
       commands

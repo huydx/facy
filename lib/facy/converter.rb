@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module Facy
   module Converter
     #convert facebook graph return to Item#class
@@ -23,22 +25,24 @@ module Facy
               graph_item["message"]
             end
           when "photo"
-            "share a photo: #{graph_item['message']}"
+            "share a photo: #{graph_item['message'] || graph_item['link']}"
           when "checkin"
             "checkin"
           when "video"
             "share a video: #{graph_item['message']}"
           when "link"
-            if graph_item["message"].nil?
-              graph_item["link"]
-            else
-              graph_item["message"]
-            end
+            "#{graph_item["message"]} #{graph_item["link"]}"
           end
         
         link = 
           (graph_item["actions"] && graph_item["actions"].first["link"]) ||
           graph_item["link"]
+        
+        likes = graph_item["likes"] && graph_item["likes"]["data"] || []
+        comments = graph_item["comments"] && graph_item["comments"]["data"] || []
+
+        like_count = likes.size
+        comment_count = comments.size
 
         item = Item.new({
           id: graph_item["id"],
@@ -48,7 +52,12 @@ module Facy
             user: graph_item["from"]["name"],
             content: content,
             picture: graph_item["picture"],
-            link: link
+            link: link,
+            like_count: like_count,
+            likes: likes, 
+            comment_count: comment_count,
+            comments: comments,
+            date: DateTime.parse(graph_item["created_time"]),
           },
           date: graph_item["created_time"],
         })

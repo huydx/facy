@@ -23,5 +23,6 @@ module Facy
         end
       end
     end
+    help :help, "display usage for a command", ":help [command]"
   end
 end

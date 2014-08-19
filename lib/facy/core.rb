@@ -41,8 +41,7 @@ module Facy
         notification_fetch_interval: 2,
         output_interval: 3,
         retry_interval: 2,
-        debug: true,
-        debug_level: 1
+        comments_view_num: 10,
       }
     end
 
