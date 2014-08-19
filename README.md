@@ -8,6 +8,7 @@ I recommend rvm to control the version of installed ruby.
 - **Homepage**: http://huydx.com/facy
 - **Installation guide**: https://github.com/huydx/facy/wiki/Installation-Guide
 - **Usage guide**: https://github.com/huydx/facy/wiki/Usage-guide
+- **Demo**: https://www.youtube.com/watch?v=zj9dGlhUXw0
 
 ![](http://i.gyazo.com/01de9c8da6191b79bcec201048361f58.png)
 
