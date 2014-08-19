@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module Facy
   module Output
     def periodic_output

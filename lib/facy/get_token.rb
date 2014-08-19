@@ -17,7 +17,6 @@ module Facy
     def setup_app_secret
       developer_page = "https://developers.facebook.com"      
       puts "★　go to #{developer_page} and enter our app_secret: "
-      browse(developer_page)
       config[:app_secret] = STDIN.gets.chomp
       log(:info, "app_secret setup success #{config[:app_id]}")
     end
@@ -105,6 +104,8 @@ module Facy
 
     def browse(url)
       Launchy.open(url)
+    rescue
+      puts "warning: can't open url"
     end
   end
   extend GetToken

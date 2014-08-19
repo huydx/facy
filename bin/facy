@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# coding: utf-8
+#
 print "\e[31m"
 puts %q{
   _/ ____\____    ____ ___.__.
@@ -10,4 +12,7 @@ puts %q{
 print "\e[0m"
 require 'facy'
 Facy.parse(ARGV)
+puts "Fetching facebook stream at first time may takes a while ♩ ♪ ♫ ♬"
+puts ""
+
 Facy.start({})
