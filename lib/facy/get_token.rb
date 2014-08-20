@@ -22,7 +22,7 @@ module Facy
     end
 
     def save_config_file
-      File.open(File.expand_path('../../../config.yml', __FILE__), 'w') do |f|
+      File.open(config_file, 'w') do |f|
         conf = {
           "app_id" => config[:app_id],
           "app_secret" => config[:app_secret],

@@ -12,6 +12,12 @@ module Facy
       inits << block
     end
 
+    def config_file
+      config_file_folder = "/tmp"
+      config_file_name = ".facy_config.yml"
+      File.expand_path(config_file_name, config_file_folder)
+    end
+
     def _init
       load_config
       login_flow
@@ -25,7 +31,10 @@ module Facy
     end
 
     def default_config
-      config = YAML.load_file(File.expand_path("../../../config.yml", __FILE__))
+      default_conf_file = File.expand_path("../../../config.yml", __FILE__)
+      file = File.exist?(config_file) ? config_file : default_conf_file
+
+      config = YAML.load_file(file)
       {
         session_file_folder: "/tmp",
         session_file_name: ".facy_access_token.yml",
