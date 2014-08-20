@@ -12,7 +12,7 @@ puts %q{
 print "\e[0m"
 require 'facy'
 Facy.parse(ARGV)
-puts "Fetching facebook stream at first time may takes a while ♩ ♪ ♫ ♬"
+puts "Fetching facebook stream at first time may take a while ♩ ♪ ♫ ♬"
 puts ""
 
 Facy.start({})
