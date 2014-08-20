@@ -61,10 +61,11 @@ module Facy
     end
 
     def facebook_set_seen(notification_id)
-      @graph.put_connection("#{notification_id}", "unread=false") 
-    rescue Koala::Facebook::ServerError
+      @graph.put_connections("#{notification_id}", "unread=false") 
+    rescue Koala::Facebook::ServerError => e
       retry_wait
-    rescue Koala::Facebook::APIError
+    rescue Koala::Facebook::APIError => e
+      error e.message
       expired_session
     rescue Exception => e
       error e

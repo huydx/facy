@@ -144,12 +144,13 @@ module Facy
     end
     
     print_register :notification do |item|
+      code = post_code(item).colorize(38,5,8).strip
       info = "☢ #{item.info.to_s.capitalize}".colorize(0,31) 
       uname = item.data.user
       uname = uname.colorize(username_color(uname))
       content = item.data.content.colorize(0,55) 
 
-      puts "[#{info}] #{uname} #{content}"
+      puts "[#{code}][#{info}] #{uname} #{content}"
     end
 
     print_register :info do |item|

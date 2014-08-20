@@ -95,11 +95,14 @@ module Facy
     help :comment, 'comment to a post,', ':comment [code] [content]'
 
     command :seen do |notif_code|
+      notif_code = "$#{notif_code}"
+      item = post_code_reverse_map[notif_code]
       async {
-        ret = facebook_set_seen(notif_code)
+        ret = facebook_set_seen(item.id)
         instant_output(Item.new(info: :info, content: 'unseen success')) if ret
       }
     end
+    help :seen, "set a notification to seen", ":seen [code]"
 
     command :view_raw do |post_code|
       post_code = "$#{post_code}"
@@ -184,7 +187,10 @@ module Facy
     help :commands, "list all available commands", ":commands"
 
     command :clear_cache do
-      sync { printed_item.clear }
+      sync { 
+        printed_item.clear
+        #TODO clear also code table
+      }
     end
     help :clear_cache, "clear posts and notification cache and fetch again", ":clear_cache"
 

@@ -14,6 +14,7 @@ module Facy
             content: graph_item["title"],
           },
           date: graph_item["created_time"],
+          link: graph_item["link"]
         })
       else
         content = 

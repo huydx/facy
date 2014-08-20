@@ -1,5 +1,4 @@
 %w(
-  rmagick
   koala
   readline
   yaml
@@ -10,6 +9,17 @@
   active_support/core_ext
   active_support/dependencies
 ).each { |lib| require lib }
+
+begin 
+  require "rmagick"
+rescue LoadError
+  begin
+    require "RMagick"
+  rescue LoadError
+    p "can not require rmagick library in this computer"
+    exit
+  end
+end
 
 Thread.abort_on_exception = true
 Encoding.default_external = Encoding.find('UTF-8')
