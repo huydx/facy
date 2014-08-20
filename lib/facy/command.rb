@@ -183,6 +183,11 @@ module Facy
     end
     help :commands, "list all available commands", ":commands"
 
+    command :clear_cache do
+      sync { printed_item.clear }
+    end
+    help :clear_cache, "clear posts and notification cache and fetch again", ":clear_cache"
+
     completion_proc = proc {|s| 
       commands
         .map{|c|c[:pattern]}

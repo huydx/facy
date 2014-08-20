@@ -24,7 +24,7 @@ module Facy
     end
 
     def instant_output(item)
-      printed_item << item.id if item.id
+      sync { printed_item << item.id if item.id }
       info = item.info
       print_registers.each do |pattern|
         if info == pattern[:name]
