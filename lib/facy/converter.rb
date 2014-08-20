@@ -31,7 +31,7 @@ module Facy
           when "video"
             "share a video: #{graph_item['message']}"
           when "link"
-            "#{graph_item["message"]} #{graph_item["link"]}"
+            "#{graph_item["message"]} #{graph_item["link"]} #{graph_item["name"]}"
           end
         
         link = 

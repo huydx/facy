@@ -124,6 +124,7 @@ module Facy
         instant_output(Item.new(info: :error, content: "use facy -enable_img_view to enable image viewer"))
       end
     end
+    help :view_img, "view an image as ascii art", ":view_img [code]"
 
     command :view_comments do |post_code|
       post_code = "$#{post_code}"
@@ -136,7 +137,7 @@ module Facy
         end
       end
     end
-    help :view_comments, "view a comment from a post", ":view_comments [code]"
+    help :view_comments, "view comments from a post", ":view_comments [code]"
 
     command :view_likes do |post_code|
       post_code = "$#{post_code}"
@@ -148,6 +149,7 @@ module Facy
         end
       end
     end
+    help :view_likes, "view likes detail from a post", ":view_likes [code]"
     
     command :dump_log do
       if config[:debug_log]
@@ -161,6 +163,18 @@ module Facy
       end
     end
     help :dump_log, "dump debug log to file", ":dump_log"
+
+    command :reconfig do
+      begin
+        FileUtils.rm(config_file)
+        FileUtils.rm(session_file)
+        instant_output(Item.new(info: :info, content: "restart facy to reconfig"))
+        stop_process
+      rescue Exception => e
+        error e.message
+      end
+    end
+    help :reconfig, "reconfig app_id, app_secret access token", ":reconfig"
 
     command :commands do
       helps.each do |help|
