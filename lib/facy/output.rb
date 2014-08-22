@@ -178,6 +178,32 @@ module Facy
     print_register :like do |item|
       puts "  ♥ #{item.from}"
     end
+
+    print_register :mails do
+      new_line
+      mails = mailbox_cache
+      count = 0
+      mails.each do |m|
+        from = m["to"]["data"].first["name"].colorize(33)
+        to = m["to"]["data"].last["name"].colorize(34)
+        first_message = m["comments"]["data"].last["message"].short.colorize(37)
+        puts "  {#{count}} from: #{from} to: #{to} [#{first_message}]"
+        count += 1
+      end
+      clear_line
+    end
+
+    print_register :mail do |item|
+      new_line
+      num = item.content.messagenum
+      comments = item.content.mail["comments"]["data"][-num, num]
+
+      comments.each do |comment|
+        created = DateTime.parse(comment["created_time"])
+        message = comment["message"]
+        puts " #{created.strftime('%m/%d %H:%M').colorize(90)} #{message}"
+      end
+    end
   end
 
   extend Output

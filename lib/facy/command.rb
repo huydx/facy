@@ -194,6 +194,21 @@ module Facy
     end
     help :clear_cache, "clear posts and notification cache and fetch again", ":clear_cache"
 
+    command :mailbox do |target|
+      if target 
+        threadnum, messagenum = target.split(" ").map(&:to_i)
+        mail = mailbox_cache[threadnum]
+        instant_output(Item.new(info: :mail, content: {mail: mail, messagenum: messagenum}))
+      else
+        async {
+          mails = facebook_mailbox
+          mails.each {|m| mailbox_cache << m} if mails && !mails.empty? 
+          instant_output(Item.new(info: :mails))
+        }
+      end
+    end
+    help :mailbox, "read mailbox", ":mailbox [mail number]"
+
     completion_proc = proc {|s| 
       commands
         .map{|c|c[:pattern]}

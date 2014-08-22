@@ -3,7 +3,11 @@ class String
     "\e[#{code.join(";")}m#{self}\e[0m"
   end
 
-  def strip
-    self.truncate(50)
+  def short
+    if self.size > 50
+      self.truncate(50) + "..."
+    else
+      self
+    end
   end
 end

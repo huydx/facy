@@ -19,7 +19,11 @@ module Facy
     def insert_lock
       @insert_lock ||= Monitor.new
     end
-    
+
+    def mailbox_cache
+      @mailbox_cache ||= []
+    end
+
     def insert_item(item)
       insert_lock.synchronize do
         _insert_item(item)

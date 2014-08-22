@@ -71,6 +71,17 @@ module Facy
       error e
     end
 
+    def facebook_mailbox
+      @graph.get_connections("me", "inbox")
+    rescue Koala::Facebook::ServerError => e
+      retry_wait
+    rescue Koala::Facebook::APIError => e
+      error e.message
+      expired_session
+    rescue Exception => e
+      error e
+    end
+
 
     def facebook_comment(post_id, comment)
       @graph.put_comment(post_id, comment)
@@ -85,7 +96,7 @@ module Facy
     def expired_session
       FileUtils.rm(session_file)
       instant_output(Item.new(info: :info, content: "Please restart facy to obtain new access token!"))
-      exit
+      stop_process
     end
 
     def retry_wait
