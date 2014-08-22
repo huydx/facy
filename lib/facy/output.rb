@@ -184,10 +184,12 @@ module Facy
       mails = mailbox_cache
       count = 0
       mails.each do |m|
-        from = m["to"]["data"].first["name"].colorize(33)
-        to = m["to"]["data"].last["name"].colorize(34)
+        from = m["to"]["data"].first["name"]
+        to = m["to"]["data"].last["name"]
+        actor = [from, to].keep_if{|m| m != me["name"]}.first.colorize(33)
         first_message = m["comments"]["data"].last["message"].short.colorize(37)
-        puts "  {#{count}} from: #{from} to: #{to} [#{first_message}]"
+        
+        puts "  {#{count}} from: #{actor} [#{first_message}]"
         count += 1
       end
       clear_line

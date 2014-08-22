@@ -7,6 +7,16 @@ module Facy
       ERROR     = 1
       SUSPENDED = 2
     end
+    
+    def facebook_me
+      @graph.api("/me?fields=id,name")
+    rescue Koala::Facebook::ServerError
+      retry_wait
+    rescue Koala::Facebook::APIError
+      expired_session
+    rescue Exception => e
+      error e
+    end
 
     def facebook_status
       @status ||= ConnectionStatus::NORMAL

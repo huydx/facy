@@ -1,5 +1,9 @@
 module Facy
   module Core
+    def me
+      @me
+    end
+
     def config
       @config ||= {}
     end
@@ -22,7 +26,12 @@ module Facy
       load_config
       login_flow
       inits.each { |block| class_eval(&block) }
+      set_me
       log(:info, "core module init success")
+    end
+
+    def set_me
+      @me = facebook_me
     end
 
     def load_config

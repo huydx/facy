@@ -196,7 +196,9 @@ module Facy
 
     command :mailbox do |target|
       if target 
-        threadnum, messagenum = target.split(" ").map(&:to_i)
+        targets = target.split(" ").map(&:to_i)
+        raise Exception.new("need two parameters") if targets.size != 2
+        threadnum, messagenum = targets
         mail = mailbox_cache[threadnum]
         instant_output(Item.new(info: :mail, content: {mail: mail, messagenum: messagenum}))
       else
