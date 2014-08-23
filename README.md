@@ -1,4 +1,9 @@
 # Facy
+
+![](https://badge.fury.io/rb/facy.svg)
+
+![](http://i.gyazo.com/2636b6c7e185717ca71b167c536ba1b9.png)
+
 Facy is a terminal client for facebook, which support streaming-like feature.
 Only supports Ruby 1.9 and later.
 To install facy, we need ruby pre-installed, please refer to https://www.ruby-lang.org/en/installation/ to know how to install ruby.
