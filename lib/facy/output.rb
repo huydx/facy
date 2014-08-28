@@ -169,6 +169,7 @@ module Facy
     print_register :help do |item|
       puts item.content
       puts "example: #{item.extra}" if item.extra
+      puts "aliasing: #{item.alias_cmds}" if item.alias_cmds
     end
 
     print_register :comment do |item|

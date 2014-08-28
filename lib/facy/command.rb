@@ -1,5 +1,13 @@
 module Facy
   module Command
+    def aliasing(origin, with)
+      alias_commands[with] = origin
+    end
+
+    def alias_commands
+      @alias_commands ||= {}
+    end
+
     def commands
       @commands ||= []
     end
@@ -11,6 +19,9 @@ module Facy
     def execute(text)
       text.strip!
       rule, target = match_single_command(text) || match_target_command(text)
+      origin = alias_commands[rule.to_sym]
+      rule = origin.nil? ? rule : origin
+
       commands.each do |c|
         if rule.to_s == c[:pattern].to_s.split(":").first
           c[:block].call(target)
@@ -78,6 +89,7 @@ module Facy
       end
     end
     help :open, 'open a post in browser', ':open [code]'
+    aliasing :open, :op
 
     command :comment do |content|
       content = content.split(" ")
@@ -93,6 +105,7 @@ module Facy
       }
     end
     help :comment, 'comment to a post,', ':comment [code] [content]'
+    aliasing :comment, :cm
 
     command :seen do |notif_code|
       notif_code = "$#{notif_code}"
@@ -112,6 +125,7 @@ module Facy
       puts "" 
     end
     help :view_raw, "view raw json output of a post", ":view_raw [post_code]"
+    aliasing :view_raw, :vr
 
     command :view_img do |post_code|
       if config[:enable_img_view]
@@ -128,6 +142,7 @@ module Facy
       end
     end
     help :view_img, "view an image as ascii art", ":view_img [code]"
+    aliasing :view_img, :vi
 
     command :view_comments do |post_code|
       post_code = "$#{post_code}"
@@ -141,6 +156,7 @@ module Facy
       end
     end
     help :view_comments, "view comments from a post", ":view_comments [code]"
+    aliasing :view_comments, :vc
 
     command :view_likes do |post_code|
       post_code = "$#{post_code}"
@@ -153,6 +169,7 @@ module Facy
       end
     end
     help :view_likes, "view likes detail from a post", ":view_likes [code]"
+    aliasing :view_likes, :vl
     
     command :dump_log do
       if config[:debug_log]
@@ -166,6 +183,7 @@ module Facy
       end
     end
     help :dump_log, "dump debug log to file", ":dump_log"
+    aliasing :dump_log, :dmp
 
     command :reconfig do
       begin
@@ -193,6 +211,7 @@ module Facy
       }
     end
     help :clear_cache, "clear posts and notification cache and fetch again", ":clear_cache"
+    aliasing :clear_cache, :cc
 
     command :mailbox do |target|
       if target 
@@ -210,6 +229,7 @@ module Facy
       end
     end
     help :mailbox, "read mailbox", ":mailbox [mail number]"
+    aliasing :mailbox, :m
 
     completion_proc = proc {|s| 
       commands
