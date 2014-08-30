@@ -19,7 +19,7 @@ module Facy
     def execute(text)
       text.strip!
       rule, target = match_single_command(text) || match_target_command(text)
-      origin = alias_commands[rule.to_sym]
+      origin = alias_commands[rule.to_sym] if rule
       rule = origin.nil? ? rule : origin
 
       commands.each do |c|
