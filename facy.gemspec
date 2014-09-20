@@ -24,5 +24,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "activesupport", "~>4.0"
   spec.add_runtime_dependency "launchy", "~>2.4"
   spec.add_runtime_dependency "eventmachine", "~>1.0"
-  spec.add_runtime_dependency "rmagick", "~>2.13"
 end
