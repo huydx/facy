@@ -128,7 +128,13 @@ module Facy
     aliasing :view_raw, :vr
 
     command :view_img do |post_code|
-      if config[:enable_img_view]
+      rmagick = false
+      begin 
+        rmagick = true if require "Rmagick"
+      rescue
+      end
+
+      if config[:enable_img_view] && rmagick
         post_code = "$#{post_code}"
         item = post_code_reverse_map[post_code]
         
