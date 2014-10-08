@@ -45,7 +45,7 @@ module Facy
 
       config = YAML.load_file(file)
       {
-        session_file_folder: "~/",
+        session_file_folder: "~",
         session_file_name: ".facy_access_token.yml",
         log_folder: "/tmp",
         log_file_name: ".facy_log",
