@@ -51,10 +51,10 @@ module Facy
   init do
     commands.clear
     command :post do |text|
-      async { 
-        ret = facebook_post(text) 
+      async {
+        ret = facebook_post(text)
         instant_output(Item.new(
-          info: :info, 
+          info: :info,
           content: "post '#{text}' has been posted to your wall")
          ) if ret["id"]
       }
@@ -65,15 +65,15 @@ module Facy
       post_code = "$#{post_code}"
       item = post_code_reverse_map[post_code]
       post_id = item.id if item.is_a?(Item)
-      async { 
-        ret = facebook_like(post_id) 
+      async {
+        ret = facebook_like(post_id)
         instant_output(Item.new(info: :info, content: "like success")) if ret
       }
     end
     help :like, 'like a post', ':like [code]'
 
-    command :exit do 
-      stop_process  
+    command :exit do
+      stop_process
     end
     help :exit, 'quit facy', ":exit"
 
@@ -95,7 +95,7 @@ module Facy
       content = content.split(" ")
       post_code = "$#{content.first}"
       comment = content.tap{|c|c.shift}.join(' ')
-      
+
       item = post_code_reverse_map[post_code]
       post_id = item.id if item.is_a?(Item)
 
@@ -122,14 +122,14 @@ module Facy
       item = post_code_reverse_map[post_code]
 
       print JSON.pretty_generate(item.raw)
-      puts "" 
+      puts ""
     end
     help :view_raw, "view raw json output of a post", ":view_raw [post_code]"
     aliasing :view_raw, :vr
 
     command :view_img do |post_code|
       rmagick = false
-      begin 
+      begin
         rmagick = true if require "Rmagick"
       rescue
       end
@@ -137,7 +137,7 @@ module Facy
       if config[:enable_img_view] && rmagick
         post_code = "$#{post_code}"
         item = post_code_reverse_map[post_code]
-        
+
         if item.data.picture
           view_img(item.data.picture)
         else
@@ -176,14 +176,14 @@ module Facy
     end
     help :view_likes, "view likes detail from a post", ":view_likes [code]"
     aliasing :view_likes, :vl
-    
+
     command :dump_log do
       if config[:debug_log]
         dump_log
         instant_output(Item.new(info: :info, content: "dump log success to #{log_file}"))
       else
         instant_output(Item.new(
-          info: :info, 
+          info: :info,
           content: "you need to start $facy -debug option to enable log"
         ))
       end
@@ -211,7 +211,7 @@ module Facy
     help :commands, "list all available commands", ":commands"
 
     command :clear_cache do
-      sync { 
+      sync {
         printed_item.clear
         #TODO clear also code table
       }
@@ -220,7 +220,7 @@ module Facy
     aliasing :clear_cache, :cc
 
     command :mailbox do |target|
-      if target 
+      if target
         targets = target.split(" ").map(&:to_i)
         raise Exception.new("need two parameters") if targets.size != 2
         threadnum, messagenum = targets
@@ -229,7 +229,7 @@ module Facy
       else
         async {
           mails = facebook_mailbox
-          mails.each {|m| mailbox_cache << m} if mails && !mails.empty? 
+          mails.each {|m| mailbox_cache << m} if mails && !mails.empty?
           instant_output(Item.new(info: :mails))
         }
       end
@@ -237,7 +237,7 @@ module Facy
     help :mailbox, "read mailbox", ":mailbox [mail number]"
     aliasing :mailbox, :m
 
-    completion_proc = proc {|s| 
+    completion_proc = proc {|s|
       commands
         .map{|c|c[:pattern]}
         .map{|c|":#{c.to_s}"}

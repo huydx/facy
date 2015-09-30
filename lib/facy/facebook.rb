@@ -7,7 +7,7 @@ module Facy
       ERROR     = 1
       SUSPENDED = 2
     end
-    
+
     def facebook_me
       @graph.api("/me?fields=id,name")
     rescue Koala::Facebook::ServerError
@@ -71,7 +71,7 @@ module Facy
     end
 
     def facebook_set_seen(notification_id)
-      @graph.put_connections("#{notification_id}", "unread=false") 
+      @graph.put_connections("#{notification_id}", "unread=false")
     rescue Koala::Facebook::ServerError => e
       retry_wait
     rescue Koala::Facebook::APIError => e
@@ -104,7 +104,9 @@ module Facy
     end
 
     def expired_session
-      FileUtils.rm(session_file)
+      if File.exists?(session_file)
+        FileUtils.rm(session_file)
+      end
       instant_output(Item.new(info: :info, content: "Please restart facy to obtain new access token!"))
       stop_process
     end
@@ -120,11 +122,11 @@ module Facy
       @graph = Koala::Facebook::API.new(token)
       log(:info, "login ok at facebook module: #{@graph}")
     end
-  end 
+  end
 
   extend Facebook
-  
+
   init do
-    login    
+    login
   end
 end

@@ -64,11 +64,11 @@ module Facy
     end
 
     def start(options={})
-      _init      
+      _init
 
       EM.run do
         Thread.start do
-          while buf = Readline.readline(config[:prompt], true) 
+          while buf = Readline.readline(config[:prompt], true)
             execute(buf.strip)
           end
         end
@@ -78,10 +78,10 @@ module Facy
             facebook_stream_fetch
           end
         end
-        
+
         Thread.start do
           EM.add_periodic_timer(config[:output_interval]) do
-            periodic_output 
+            periodic_output
           end
         end
 
@@ -113,7 +113,7 @@ module Facy
     def stop_process
       puts "\nfacy going to stop..."
       Thread.new {
-        EventMachine.stop 
+        EventMachine.stop
       }.join
     end
   end
