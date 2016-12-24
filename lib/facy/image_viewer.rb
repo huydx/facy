@@ -82,7 +82,7 @@ module Facy
         #@image = @image.quantize(4294967295, Magick::GRAYColorspace, Magick::RiemersmaDitherMethod, 0, false)
         @image = @image.resize_to_fit(@view_width, @view_height)
         #@image = @image.resize_to_fill(@view_width, @view_height, Magick::CenterGravity)
-        @dither = Caca::Dither.new(24, @image.columns, @image.rows, @image.columns*3, 0xff0000, 0x00ff00, 0x0000ff, 0)
+        @dither = Caca::Dither.new(24, @image.columns, @image.rows, @image.columns*3, 0x0000ff, 0x00ff00, 0xff0000, 0)
        	@pixels = @image.export_pixels_to_str(0, 0, @image.columns, @image.rows)
         @dither.set_algorithm("fstein")
 	#@dither.set_charset("ascii");
