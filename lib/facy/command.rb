@@ -264,18 +264,15 @@ module Facy
       puts "please wait buffering... press any key to stop..."
       mplayer_common_args=%q[-msglevel all=-1 -framedrop -noconsolecontrols -slave -cookies -cache 16000 -quiet -vo caca]
       if video.include? "youtube.com" or video.include? "youtu.be"
-        puts "2 pipes mode"
         ytdl_pid=spawn(%Q[youtube-dl -f "[height<=#{height}]" -q "#{video}" > #{ip}])
         mplayer_pid=spawn({"CACA_DRIVER"=>"ncurses"},%Q[mplayer #{mplayer_common_args} -cookies-file "#{cookie_file}" -user-agent "#{ua}" -input file="#{cp}" "#{ip}"])
       else
-        puts "no pipes mode"
         mplayer_pid=spawn({"CACA_DRIVER"=>"ncurses"},%Q[mplayer #{mplayer_common_args} -cookies-file "#{cookie_file}" -user-agent "#{ua}" -input file="#{cp}" "#{video}"])
       end
       while Process.waitpid(mplayer_pid, Process::WNOHANG).nil? do
          begin
            c = STDIN.read_nonblock(1)
            if c.present?
-             puts "#{c}"
              break
            end
          rescue Errno::EWOULDBLOCK
@@ -293,7 +290,6 @@ module Facy
       end
       `echo "quit" > #{cp}`
       `stty sane`
-      puts "video done"
       if video.include? "youtube.com" and Process.waitpid(ytdl_pid, Process::WNOHANG).nil?
         Process.kill("INT", ytdl_pid)
       end
