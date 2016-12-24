@@ -5,7 +5,10 @@ module Facy
     def periodic_output
       return if (items = not_yet_print_items).empty?
       new_line
-      items.each {|item| instant_output(item)}
+      #items.each {|item| instant_output(item)}
+      items.each do |item|
+          instant_output(item)
+      end
       clear_line
     end
 
@@ -136,21 +139,95 @@ module Facy
       uname = item.data.user
       like_count = item.data.like_count.to_s.colorize(36,48,5,0)
       comment_count = item.data.comment_count.to_s.colorize(36,48,5,0)
+      share_count = item.data.share_count.to_s.colorize(36,48,5,0)
       uname = uname.colorize(username_color(uname))
       content = item.data.content.colorize(0,55)
       date = item.data.date
-      
-      puts "[#{code}][#{info}] #{uname} #{content}  {#{type}} L:#{like_count} C:#{comment_count}"
+      if config[:utilize_emojis]
+        video_indicator=""
+        picture_indicator=""
+        if item.data.video.present?
+          video_indicator="🎞"
+        end
+        if item.data.picture.present?
+          picture_indicator="🖼"
+        end
+
+        animated_gif_indicator=""
+        if (item.data.video.include? ".gif")
+          animated_gif_indicator="🔁"
+        end   
+        
+        react = item.data.react_scores
+        react = react.gsub(";", "")
+        react = react.sub(/[0-9.]+.? Like/, "")
+        react = react.sub(/([0-9.]+.?) Haha/, "😃 :\\1 ")
+        react = react.sub(/([0-9.]+.?) Sad/, "😢 :\\1 ")
+        react = react.sub(/([0-9.]+.?) Angry/, "😡 :\\1 ")
+        react = react.sub(/([0-9.]+.?) Wow/, "😮 :\\1 ")
+        react = react.sub(/([0-9.]+.?) Love/, "❤ :\\1 ")
+        puts "[#{code}][#{info}] #{uname} #{content}  {#{type}} #{video_indicator}  #{picture_indicator} #{animated_gif_indicator} 👍 :#{like_count} C:#{comment_count} S:#{share_count} #{react}"
+      else
+        react = item.data.react_scores
+        react = react.gsub(";", "")
+        react = react.sub(/[0-9.]+.? Like/, "")
+        react = react.sub(/([0-9.]+.?) Haha/, "H:\\1 ")
+        react = react.sub(/([0-9.]+.?) Sad/, "S:\\1 ")
+        react = react.sub(/([0-9.]+.?) Angry/, "A:\\1 ")
+        react = react.sub(/([0-9.]+.?) Wow/, "W:\\1 ")
+        react = react.sub(/([0-9.]+.?) Love/, "L️:\\1 ")
+        puts "[#{code}][#{info}] #{uname} #{content}  {#{type}} L:#{like_count} C:#{comment_count} S:#{share_count} #{react}"
+      end
     end
     
     print_register :notification do |item|
       code = post_code(item).colorize(38,5,8).strip
+      emoji=""
+      if config[:utilize_emojis]
+        case item.data.emoji
+        when "love"
+          emoji="❤️"
+        when "like"
+          emoji="👍"
+        when "haha"
+          emoji="😄"
+        when "wow"
+          emoji="😮"
+        when "sad"
+          emoji="😢"
+        when "angry"
+          emoji="😡"
+        when "wrench"
+          emoji="🔧"
+        when "calendar"
+          emoji="📅"
+        when "commented"
+          emoji="💬"
+        when "facebook"
+          emoji="\e[15;48;5;27m f \e[0m"
+        when "page_new_message"
+          emoji="🚩"
+        when "bug"
+          emoji="🐞" #dunno i never seen the image
+        when "bookmarked"
+          emoji="📑"
+        when "photo"
+          emoji="🖼"
+        when "star"
+          emoji="⭐"
+        when "unknown"
+          emoji="❓"
+        else
+          emoji="❓"
+        end
+      end
+      
       info = "☢ #{item.info.to_s.capitalize}".colorize(0,31) 
       uname = item.data.user
       uname = uname.colorize(username_color(uname))
       content = item.data.content.colorize(0,55) 
 
-      puts "[#{code}][#{info}] #{uname} #{content}"
+      puts "[#{code}][#{info}] #{emoji} #{uname} #{content}"
     end
 
     print_register :info do |item|

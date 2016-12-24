@@ -55,11 +55,27 @@ module Facy
         granted: config['granted'],
         redirect_uri: "http://www.facebook.com/connect/login_success.html",
         prompt: "\e[15;48;5;27m f \e[0m >> ",
-        stream_fetch_interval: 2,
-        notification_fetch_interval: 2,
-        output_interval: 3,
+        stream_fetch_interval: 60, #2 - original
+        notification_fetch_interval: 60, #2 - original
+        output_interval: 3, #3 - original
         retry_interval: 2,
         comments_view_num: 10,
+        fb_name: "",
+        fb_password: "",
+        fb_cookiejar: "~/fb-cookies.txt",
+        external_image_viewer: "eog",
+        external_movie_viewer: "",
+        external_www_browser: "firefox",
+        pause_output: false,
+        utilize_emojis: true, 
+        unread_notifications_only: false,
+        notification_pages: 1,
+        news_feed_pages: 10,
+        show_latest_newsfeed: true,
+        user_agent: "Mozilla/5.0 (X11; Linux i686 on x86_64; rv:45.0) Gecko/20100101 Firefox/45.0)",
+        id_timestamp_last_news_feed: 0,
+        id_timestamp_last_notifications: 0,
+        facebook_api_version: "2.8",
       }
     end
 
@@ -75,19 +91,25 @@ module Facy
 
         Thread.start do
           EM.add_periodic_timer(config[:stream_fetch_interval]) do
-            facebook_stream_fetch
+            if not config[:pause_output]
+              facebook_stream_fetch
+            end
           end
         end
 
         Thread.start do
           EM.add_periodic_timer(config[:output_interval]) do
-            periodic_output
+            if not config[:pause_output]
+              periodic_output
+            end
           end
         end
 
         Thread.start do
           EM.add_periodic_timer(config[:notification_fetch_interval]) do
-            facebook_notification_fetch
+            if not config[:pause_output]
+              facebook_notification_fetch
+            end
           end
         end
 

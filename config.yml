@@ -1,4 +1,4 @@
 ---
 app_id:
-permission: friends_status,manage_notifications,publish_actions,read_friendlists,read_stream,user_status,read_mailbox
+permission: user_friends,user_posts,publish_actions,read_custom_friendlists,user_status
 granted:

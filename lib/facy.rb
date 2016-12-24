@@ -2,12 +2,15 @@
   koala
   readline
   yaml
+  json
   thread
   launchy
   eventmachine
   active_support
   active_support/core_ext
   active_support/dependencies
+  caca
+  io/console
 ).each { |lib| require lib }
 
 Thread.abort_on_exception = true

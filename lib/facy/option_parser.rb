@@ -13,7 +13,10 @@ module Facy
         opt.on('--enable_img_view VALUE') do |v|
           config[:enable_img_view] = v
         end
-
+        
+        opt.on('--utilize_emojis VALUE') do |v|
+          config[:utilize_emojis] = v
+        end
         opt.parse!(argv)
       end
     end

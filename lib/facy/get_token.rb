@@ -64,9 +64,9 @@ module Facy
       app_id = config[:app_id]
       redirect_uri = config[:redirect_uri]
       permission = config[:permission]
-
+      puts "showing dialog"
       get_access_url  =
-        "https://www.facebook.com/dialog/oauth?client_id=#{app_id}&scope=#{permission}&redirect_uri=#{redirect_uri}"
+        "https://www.facebook.com/v#{config[:facebook_api_version]}/dialog/oauth?client_id=#{app_id}&scope=#{permission}&redirect_uri=#{redirect_uri}"
       puts "★　goto #{get_access_url} to grant access to our app"
       browse(get_access_url)
       puts "→ after access granted press enter"
@@ -82,6 +82,52 @@ module Facy
       log(:info, "setup access token success: #{token}")
     end
 
+    def setup_feed_login_email
+       puts "★ Facebook email login to access news feed:"
+       fb_email = STDIN.gets.chomp
+       config[:fb_email] = fb_email
+    end
+
+    def setup_feed_login_password
+       puts "★ Facebook password login to access news feed:"
+       fb_password = STDIN.noecho(&:gets).chomp
+       config[:fb_password] = fb_password
+    end
+
+    def setup_feed_login
+      scwd=File.dirname(__FILE__)
+      bypass_second_check=false
+      if File.exists?("#{config[:fb_cookiejar]}")
+        out = `casperjs --ssl-protocol=tlsv1 --user-agent="#{config[:user_agent]}" --cookies-file=#{config[:fb_cookiejar]} #{scwd}/facebook-check-login.js`
+        if out.include? "false"
+            FileUtils.rm("#{config[:fb_cookiejar]}")
+            setup_feed_login_email
+            setup_feed_login_password
+        else
+            log(:info, "facebook cookies are still good")
+            bypass_second_check=true
+        end
+      else
+        setup_feed_login_email
+       	setup_feed_login_password
+      end
+      if not bypass_second_check
+        out = `casperjs --ssl-protocol=tlsv1 --user-agent="#{config[:user_agent]}" --cookies-file="#{config[:fb_cookiejar]}" --email="#{config[:fb_email]}" --password="#{config[:fb_password]}" #{scwd}/facebook-login.js`
+        if out.include? "false"
+            log(:info, "setup facebook feed login failed")
+            if File.exists?("#{config[:fb_cookiejar]}")
+              FileUtils.rm("#{config[:fb_cookiejar]}")
+            end
+            raise Exception.new("login attempt failed");
+        else
+            log(:info, "setup facebook feed login success")
+        end
+      end
+	  config[:fb_email]=""
+	  config[:fb_password]=""
+      
+    end
+
     def login_flow
       unless config[:app_id]
         setup_app_id
@@ -92,6 +138,7 @@ module Facy
       unless config[:granted]
         grant_access
       end
+      setup_feed_login
       save_config_file
 
       unless load_session_file 

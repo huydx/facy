@@ -25,17 +25,83 @@ module Facy
   
     class Image
       def initialize(path, options={})
-        @image = Magick::ImageList.new(path)
+	@term_height, @term_width = get_term_size
+	if path.blank?
+		puts "post doesn't contain image"
+		return
+	end
         @fit_terminal = !!options[:fit_terminal]
+        @double = !!options[:double]
+
+	@full_width = false
+	@draw_method = options[:draw_method] #set to :caca or :termpic or :fbi
+        @fit_terminal = true
+
+        if @full_width
+                @view_width = [@term_height,@term_width].max
+                @view_height = [@term_height,@term_width].max
+        else
+                @view_width = @term_width
+                @view_height = @term_height
+        end
+
+	case @draw_method
+	when :caca
+	        @image = Magick::ImageList.new(path)
+	when :termpic
+	        @image = Magick::ImageList.new(path)
+	else
+		puts "viewer unset"
+	end
+
       rescue Exception => e
         p e.message
       end
 
       def draw
+        if @draw_method == :caca
+                draw_caca
+        else
+                draw_termpic
+        end
+      end
+
+      def draw_termpic
         convert_to_fit_terminal_size if @fit_terminal
         rgb_analyze
         ansi_analyze
         puts_ansi
+      end
+
+      def draw_caca
+        @canvas = Caca::Canvas.new(@view_width, @view_height)
+        puts "created canvas"
+        @orig_image = @image
+        #@image = @image.quantize(4294967295, Magick::RGBColorspace, Magick::NoDitherMethod, 0, false)
+        @image = @image.quantize(4294967295, Magick::RGBColorspace, Magick::RiemersmaDitherMethod, 0, false)
+        #@image = @image.quantize(4294967295, Magick::GRAYColorspace, Magick::RiemersmaDitherMethod, 0, false)
+        @image = @image.resize_to_fit(@view_width, @view_height)
+        #@image = @image.resize_to_fill(@view_width, @view_height, Magick::CenterGravity)
+        @dither = Caca::Dither.new(24, @image.columns, @image.rows, @image.columns*3, 0x0000ff, 0x00ff00, 0xff0000, 0)
+       	@pixels = @image.export_pixels_to_str(0, 0, @image.columns, @image.rows)
+        @dither.set_algorithm("fstein")
+	#@dither.set_charset("ascii");
+	#@dither.set_charset("shades");
+	#@dither.set_charset("blocks");
+        #@dither.set_algorithm("none")
+        #@dither.set_algorithm("ordered2")
+        #@dither.set_algorithm("ordered4")
+        #@dither.set_algorithm("ordered8")
+        @canvas.dither_bitmap(0, 0, @image.columns, @image.rows, @dither, @pixels)
+        puts @canvas.export_to_memory("ansi")
+      end
+
+      def convert_to_fit_terminal_size
+        #term_height, term_width = get_term_size
+        #term_width = term_width / 2 if @double
+        @orig_image = @image
+        @image = @image.resize_to_fit(@view_width, @view_height)
+        #@image = @image.resize_to_fill(view_width, view_height)
       end
 
       def rgb_analyze
