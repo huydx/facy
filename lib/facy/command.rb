@@ -390,6 +390,8 @@ module Facy
     help :commands, "list all available commands", ":commands"
 
     command :clear_cache do
+      config[:id_timestamp_last_news_feed] = 0
+      config[:id_timestamp_last_notifications] = 0
       sync {
         printed_item.clear
         #TODO clear also code table
